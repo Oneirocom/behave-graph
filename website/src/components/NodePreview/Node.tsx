@@ -1,5 +1,5 @@
 import React from 'react';
-import { NodeSpecJSON } from 'packages/core/src/Graphs/IO/NodeSpecJSON';
+import { NodeSpecJSON } from '@behave-graph/core';
 import NodeContainer from './NodeContainer.js';
 import InputSocket from './InputSocket.js';
 import OutputSocket from './OutputSocket.js';
@@ -34,7 +34,13 @@ const Node = ({ spec }: NodeProps) => {
             position: 'relative'
           }}
         >
-          {input && <InputSocket {...input} value={input.defaultValue} />}
+          {input && (
+            <InputSocket
+              {...input}
+              value={input.defaultValue}
+              onChange={() => {}}
+            />
+          )}
           {output && <OutputSocket {...output} />}
         </div>
       ))}

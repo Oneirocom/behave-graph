@@ -1,6 +1,4 @@
-import { NodeSpecJSON } from 'packages/core/src/Graphs/IO/NodeSpecJSON';
-import { NodeDescription } from 'packages/core/src/Nodes/Registry/NodeDescription';
-import { Socket } from 'packages/core/src/Sockets/Socket';
+import { NodeSpecJSON, NodeDescription, Socket } from '@behave-graph/core';
 import React from 'react';
 
 import Node from './Node.js';

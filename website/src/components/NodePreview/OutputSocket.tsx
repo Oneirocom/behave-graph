@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { colors, valueTypeColorMap } from './utils/colors.js';
-import { OutputSocketSpecJSON } from 'packages/core/src/Graphs/IO/NodeSpecJSON';
+import { OutputSocketSpecJSON } from '@behave-graph/core';
 
 export type OutputSocketProps = OutputSocketSpecJSON;
 
