@@ -3,6 +3,14 @@
   "include": ["src"],
   "exclude": ["**/*.test.ts"],
   "compilerOptions": {
-    "outDir": "dist"
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "sourceMap": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "esModuleInterop": true
   }
 }

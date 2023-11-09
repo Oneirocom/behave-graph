@@ -3,13 +3,12 @@ import { dirname, join } from 'node:path';
 
 import {
   Graph,
-  IGraph,
-  NodeDefinition,
   NodeSpecJSON,
   Registry,
   ValueType,
   writeNodeSpecsToJSON
 } from '@behave-graph/core';
+
 // We need to transform directories to kebab case because otherwise Docusaurus won't generate the toString one
 import { kebab, pascal } from 'case';
 

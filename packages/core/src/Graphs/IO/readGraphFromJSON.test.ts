@@ -2,7 +2,7 @@ import { Logger } from '../../Diagnostics/Logger.js';
 import { ManualLifecycleEventEmitter } from '../../Profiles/Core/Abstractions/Drivers/ManualLifecycleEventEmitter.js';
 import { registerCoreProfile } from '../../Profiles/Core/registerCoreProfile.js';
 import { readGraphFromJSON } from './readGraphFromJSON.js';
-Logger.onWarn.clear();
+// Logger.onWarn.clear();
 
 describe('readGraphFromJSON', () => {
   const registry = registerCoreProfile({

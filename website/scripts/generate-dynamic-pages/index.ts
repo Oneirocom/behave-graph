@@ -6,9 +6,11 @@ import { join } from 'node:path';
 //   coreDescriptions,
 //   join(__dirname, '../../docs/profiles/Core')
 // );
-import { registerCoreProfile } from '../../../packages/core/src/Profiles/Core/registerCoreProfile.js';
-import { registerSceneProfile } from '../../../packages/core/src/Profiles/Scene/registerSceneProfile.js';
-import { Registry } from '../../../packages/core/src/Registry.js';
+import {
+  registerCoreProfile,
+  registerSceneProfile,
+  Registry
+} from '@behave-graph/core';
 import generatePagesFromExamples from './generate-pages-from-examples.js';
 import generatePagesFromRegistry from './generate-pages-from-registry.js';
 
