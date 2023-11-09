@@ -24,15 +24,15 @@
   ],
   "scripts": {
     "build": "lerna run build",
-    "changeset:add": "changeset add",
+    "changeset:add": "npx changeset add",
     "clean": "rm -rf node_modules packages/*/node_modules apps/*/node_modules packages/*/dist apps/*/dist",
     "dev": "lerna run dev --parallel --stream",
     "docs": "typedoc",
     "format": "eslint \"{apps,packages}/*/src/**/*.{js,ts,tsx,json}\" --fix && prettier \"{apps,packages}/*/src/**/*.{js,ts,tsx,json}\" --check --write",
-    "release": "npm run build && npm run changeset publish",
+    "release": "npm run build && npx changeset publish",
     "test": "jest",
     "types": "lerna run types --parallel --stream",
-    "vers": "npm run changeset version"
+    "vers": "npx changeset version"
   },
   "dependencies": {
     "commander": "^9.4.1",
