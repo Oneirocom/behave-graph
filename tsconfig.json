@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "NodeNext",
     "lib": ["es2020", "dom", "dom.iterable"],
     "typeRoots": ["node_modules/@types"],
     "esModuleInterop": true,
     "declaration": true,
     "sourceMap": true,
-    "strict": false,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -14,7 +17,8 @@
     "skipLibCheck": true,
     "incremental": true,
     "paths": {
-      "@magickml/behave-graph": ["./packages/core/src/index.ts"]
+      "@magickml/behave-graph": ["./packages/core/src/index.ts"],
+      "@magickml/behave-graph-scene": ["./packages/scene/src/index.ts"]
     }
   }
 }

@@ -14,7 +14,7 @@ import {
   validateGraph,
   validateRegistry
 } from '@magickml/behave-graph';
-import { DummyScene, registerSceneProfile } from '@behave-graph/scene';
+import { DummyScene, registerSceneProfile } from '@magickml/behave-graph-scene';
 import { program } from 'commander';
 import { createRequire } from 'module';
 

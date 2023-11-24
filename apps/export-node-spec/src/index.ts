@@ -8,7 +8,7 @@ import {
   validateNodeRegistry,
   writeNodeSpecsToJSON
 } from '@magickml/behave-graph';
-import { DummyScene, registerSceneProfile } from '@behave-graph/scene';
+import { DummyScene, registerSceneProfile } from '@magickml/behave-graph-scene';
 import { program } from 'commander';
 import { stringify } from 'csv-stringify';
 import { createRequire } from 'module';
