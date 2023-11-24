@@ -1,4 +1,4 @@
-# @magickml/behave-graph
+# @magickml/behave-graph-flow
 
 ## 0.10.0
 
@@ -6,8 +6,7 @@
 
 - Updates core packages to work in browser and node
 
-## 0.9.13
-
 ### Patch Changes
 
-- 3b0f9dd: Adds exports for missing graph flow code
+- Updated dependencies
+  - @magickml/behave-graph@0.10.0
