@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@behave-graph/core": "*",
+    "@magickml/behave-graph": "*",
     "@behave-graph/scene": "*",
     "@behave-graph/flow": "*",
     "three": "0.152.2",

@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 import React from 'react';
 import { useMemo, useRef, useState } from 'react';
 import { useEdges, useNodes } from 'reactflow';

@@ -13,7 +13,7 @@ import {
   registerCoreProfile,
   validateGraph,
   validateRegistry
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 import { DummyScene, registerSceneProfile } from '@behave-graph/scene';
 import { program } from 'commander';
 import { createRequire } from 'module';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { colors, valueTypeColorMap } from './utils/colors.js';
-import { InputSocketSpecJSON } from '@behave-graph/core';
+import { InputSocketSpecJSON } from '@magickml/behave-graph';
 import { AutoSizeInput } from './AutoSizeInput.js';
 
 export type InputSocketProps = {

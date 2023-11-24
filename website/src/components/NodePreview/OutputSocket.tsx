@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { colors, valueTypeColorMap } from './utils/colors.js';
-import { OutputSocketSpecJSON } from '@behave-graph/core';
+import { OutputSocketSpecJSON } from '@magickml/behave-graph';
 
 export type OutputSocketProps = OutputSocketSpecJSON;
 

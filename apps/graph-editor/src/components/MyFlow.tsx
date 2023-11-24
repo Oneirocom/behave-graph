@@ -5,7 +5,7 @@ import Polynomial from '../../../../graphs/core/logic/Polynomial.json';
 import Delay from '../../../../graphs/core/time/Delay.json';
 import SetGet from '../../../../graphs/core/variables/SetGet.json';
 import rawGraph from '../graph.json';
-import { GraphJSON } from '@behave-graph/core';
+import { GraphJSON } from '@magickml/behave-graph';
 import { Examples, Flow } from '@behave-graph/flow';
 import { useRegistry } from '../hooks/useRegistry.js';
 

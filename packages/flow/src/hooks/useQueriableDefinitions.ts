@@ -1,4 +1,4 @@
-import { IQueryableRegistry } from '@behave-graph/core';
+import { IQueryableRegistry } from '@magickml/behave-graph';
 import { useMemo } from 'react';
 
 export const toQueryableDefinitions = <T>(definitionsMap: {

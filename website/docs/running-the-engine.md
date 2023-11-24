@@ -17,8 +17,8 @@ import {
   readGraphFromJSON,
   registerCoreProfile,
   Registry,
-  ManualLifecycleEventEmitter,
-} from '@behave-graph/core';
+  ManualLifecycleEventEmitter
+} from '@magickml/behave-graph';
 
 import myGraphJson from './myGraph.json';
 
@@ -56,5 +56,4 @@ if (manualLifecycleEventEmitter.endEvent.listenerCount > 0) {
   manualLifecycleEventEmitter.endEvent.emit();
   await engine.executeAllAsync(5);
 }
-
 ```

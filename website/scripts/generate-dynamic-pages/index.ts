@@ -10,7 +10,7 @@ import {
   registerCoreProfile,
   registerSceneProfile,
   Registry
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 import generatePagesFromExamples from './generate-pages-from-examples.js';
 import generatePagesFromRegistry from './generate-pages-from-registry.js';
 

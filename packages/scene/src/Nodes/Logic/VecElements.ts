@@ -3,7 +3,7 @@ import {
   IGraph,
   NodeDescription,
   Socket
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 export class VecElements<T> extends FunctionNode {
   constructor(

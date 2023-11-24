@@ -5,7 +5,7 @@ import {
   IntegerValue,
   StringValue,
   ValueType
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 import { ColorValue } from '../../Values/ColorValue.js';
 import { EulerValue } from '../../Values/EulerValue.js';

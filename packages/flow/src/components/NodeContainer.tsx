@@ -1,4 +1,4 @@
-import { NodeCategory, NodeSpecJSON } from '@behave-graph/core';
+import { NodeCategory, NodeSpecJSON } from '@magickml/behave-graph';
 import cx from 'classnames';
 import React, { PropsWithChildren } from 'react';
 

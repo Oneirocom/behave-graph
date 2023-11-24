@@ -5,7 +5,7 @@ import {
   ILifecycleEventEmitter,
   IRegistry,
   readGraphFromJSON
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 import { useCallback, useEffect, useState } from 'react';
 
 /** Runs the behavior graph by building the execution

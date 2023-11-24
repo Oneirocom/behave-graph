@@ -7,7 +7,7 @@ import {
   Registry,
   ValueType,
   writeNodeSpecsToJSON
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 // We need to transform directories to kebab case because otherwise Docusaurus won't generate the toString one
 import { kebab, pascal } from 'case';

@@ -1,4 +1,4 @@
-import { GraphJSON, NodeSpecJSON } from '@behave-graph/core';
+import { GraphJSON, NodeSpecJSON } from '@magickml/behave-graph';
 import {
   faDownload,
   faPause,

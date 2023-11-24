@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 
 export const colors: Record<string, [string, string, string]> = {
   red: ['#f56565', '#ed64a6', '#ffffff'],

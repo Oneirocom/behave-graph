@@ -1,4 +1,4 @@
-import { NodeSpecJSON, NodeDescription, Socket } from '@behave-graph/core';
+import { NodeSpecJSON, NodeDescription, Socket } from '@magickml/behave-graph';
 import React from 'react';
 
 import Node from './Node.js';

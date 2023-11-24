@@ -2,7 +2,7 @@ import {
   IRegistry,
   NodeSpecJSON,
   writeNodeSpecsToJSON
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 import { useEffect, useState } from 'react';
 
 export const useNodeSpecJson = (registry: IRegistry) => {

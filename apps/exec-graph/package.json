@@ -11,7 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@behave-graph/core": "*",
+    "@magickml/behave-graph": "*",
     "@behave-graph/scene": "*"
   }
 }

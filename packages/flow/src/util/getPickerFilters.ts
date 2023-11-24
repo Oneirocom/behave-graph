@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 import { Node, OnConnectStartParams } from 'reactflow';
 
 import { NodePickerFilters } from '../components/NodePicker.js';

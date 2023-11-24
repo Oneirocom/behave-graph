@@ -1,5 +1,5 @@
 {
-  "name": "@behave-graph/scene",
+  "name": "@magickml/behave-graph-scene",
   "version": "0.9.12",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -16,7 +16,7 @@
     "@types/offscreencanvas": "^2019.7.0"
   },
   "dependencies": {
-    "@behave-graph/core": "*"
+    "@magickml/behave-graph": "*"
   },
   "license": "ISC",
   "peerDependencies": {

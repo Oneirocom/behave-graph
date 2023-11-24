@@ -13,7 +13,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@behave-graph/core": "*",
+    "@magickml/behave-graph": "*",
     "@behave-graph/scene": "*",
     "csv-stringify": "^6.2.1"
   }

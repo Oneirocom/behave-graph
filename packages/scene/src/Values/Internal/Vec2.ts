@@ -3,7 +3,7 @@ import {
   equalsTolerance,
   parseSafeFloats,
   toSafeString
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 export type Vec2JSON = number[];
 

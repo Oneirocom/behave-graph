@@ -49,7 +49,7 @@ Some examples of event nodes are:
 
 ### Logic
 
-Logic nodes are used to perform logic operations on the data in the system. 
+Logic nodes are used to perform logic operations on the data in the system.
 
 Some examples of logic nodes are:
 
@@ -114,10 +114,7 @@ To create a custom node, you need to create a node description, there are severa
 If you want to create a node that defines constants, you can use the `NodeDescription` constructor with the `In1Out1FuncNode` helper.
 
 ```ts
-import {
-  In1Out1FuncNode,
-  NodeDescription,
-} from '@behave-graph/core';
+import { In1Out1FuncNode, NodeDescription } from '@magickml/behave-graph';
 
 const Constant = new NodeDescription(
   'logic/object',
@@ -139,10 +136,7 @@ const Constant = new NodeDescription(
 The same way, if you want to create a node that defines binary functions, you can use the `NodeDescription` constructor with the `In2Out1FuncNode` helper. (There are also `In3Out1FuncNode` and `In4Out1FuncNode` helpers)
 
 ```ts
-import {
-  In2Out1FuncNode,
-  NodeDescription,
-} from '@behave-graph/core';
+import { In2Out1FuncNode, NodeDescription } from '@magickml/behave-graph';
 import { path } from 'rambdax';
 
 const Path = new NodeDescription(
@@ -174,8 +168,8 @@ import {
   FlowNode,
   NodeDescription,
   Socket,
-  ILogger,
-} from '@behave-graph/core';
+  ILogger
+} from '@magickml/behave-graph';
 
 class LogObject extends FlowNode {
   public static Description = (logger: ILogger) =>
@@ -198,7 +192,7 @@ class LogObject extends FlowNode {
         new Socket('flow', 'flow'),
         new Socket('string', 'text'),
         new Socket('string', 'severity', 'info'),
-        new Socket('object', 'payload'),
+        new Socket('object', 'payload')
       ],
       [new Socket('flow', 'flow')]
     );
@@ -240,8 +234,8 @@ import {
   Engine,
   Graph,
   NodeDescription,
-  Socket,
-} from '@behave-graph/core';
+  Socket
+} from '@magickml/behave-graph';
 import { JSONTemplateEngine } from 'json-template-engine';
 
 export type ITemplateEngineFactory = () => JSONTemplateEngine;
@@ -266,7 +260,7 @@ export class Template extends AsyncNode {
       [
         new Socket('flow', 'flow'),
         new Socket('object', 'template', ''),
-        new Socket('object', 'data', ''),
+        new Socket('object', 'data', '')
       ],
       [new Socket('flow', 'flow'), new Socket('object', 'result', '')]
     );

@@ -3,7 +3,7 @@ import {
   IRegistry,
   ManualLifecycleEventEmitter,
   registerCoreProfile
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 import { DummyScene, registerSceneProfile } from '@behave-graph/scene';
 import { useMemo } from 'react';
 

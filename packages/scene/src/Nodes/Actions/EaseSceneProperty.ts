@@ -9,7 +9,7 @@ import {
   NodeDescription,
   Socket,
   toCamelCase
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 import { IScene } from '../../Abstractions/IScene.js';
 

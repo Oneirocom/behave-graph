@@ -1,4 +1,4 @@
-import { ValueType } from '@behave-graph/core';
+import { ValueType } from '@magickml/behave-graph';
 
 import { Vec2, Vec2JSON, vec2Mix, vec2Parse } from './Internal/Vec2.js';
 

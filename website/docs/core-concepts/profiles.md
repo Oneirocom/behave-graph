@@ -8,7 +8,7 @@ A profile is a function that updates the registry with the nodes and value types
 
 ## Using official Profiles
 
-The official profiles are available in the `@behave-graph/core` package.
+The official profiles are available in the `@magickml/behave-graph` package.
 
 ```ts
 import {
@@ -17,8 +17,8 @@ import {
   ManualLifecycleEventEmitter,
   Registry,
   registerCoreProfile,
-  registerSceneProfile,
-} from '@behave-graph/core';
+  registerSceneProfile
+} from '@magickml/behave-graph';
 
 const registry = new Registry();
 const logger = new DefaultLogger();
@@ -32,22 +32,18 @@ registerSceneProfile(registry, scene);
 ## Creating a Custom Profile
 
 ```ts
-import { Registry, ILogger } from '@behave-graph/core';
+import { Registry, ILogger } from '@magickml/behave-graph';
 
-const registerMyProfile = (
-  registry: Registry,
-  logger: ILogger,
-) => {
+const registerMyProfile = (registry: Registry, logger: ILogger) => {
   const { nodes, values } = registry;
 
   // Register nodes
   nodes.register(MyNodeDescription);
   nodes.register(MyNodeWithDependenciesDescription(logger));
-    
+
   // Register value types
   values.register(MyValueTypeDescription);
 
   return registry;
 };
 ```
-

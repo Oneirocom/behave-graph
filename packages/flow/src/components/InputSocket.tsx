@@ -1,4 +1,4 @@
-import { InputSocketSpecJSON, NodeSpecJSON } from '@behave-graph/core';
+import { InputSocketSpecJSON, NodeSpecJSON } from '@magickml/behave-graph';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';

@@ -1,4 +1,4 @@
-import { makeInNOutFunctionDesc } from '@behave-graph/core';
+import { makeInNOutFunctionDesc } from '@magickml/behave-graph';
 
 import {
   Vec4,

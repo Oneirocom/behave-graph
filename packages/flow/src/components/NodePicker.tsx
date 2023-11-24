@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 import React, { useState } from 'react';
 import { useReactFlow, XYPosition } from 'reactflow';
 

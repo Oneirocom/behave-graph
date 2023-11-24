@@ -1,4 +1,4 @@
-import { Choices, EventEmitter } from '@behave-graph/core';
+import { Choices, EventEmitter } from '@magickml/behave-graph';
 import {
   Event,
   Material,

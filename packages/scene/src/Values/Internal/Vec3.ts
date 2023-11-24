@@ -4,7 +4,7 @@ import {
   equalsTolerance,
   parseSafeFloats,
   toSafeString
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 import { Mat3, mat4ToMat3, quatToMat3 } from './Mat3.js';
 import { Mat4 } from './Mat4.js';

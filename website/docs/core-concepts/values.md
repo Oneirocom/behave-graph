@@ -58,13 +58,12 @@ The Core profile contains the following value types:
 - [Integer](../profiles/Core/Values/integer)
 - [String](../profiles/Core/Values/string)
 
-
 ## Creating a custom value type
 
 To create a custom value type, you need to create a value type description with serializer and deserializer functions.
 
 ```ts
-import { ValueType } from '@behave-graph/core';
+import { ValueType } from '@magickml/behave-graph';
 
 export const ObjectValue = new ValueType(
   'object',
@@ -73,7 +72,7 @@ export const ObjectValue = new ValueType(
     typeof value === 'string' ? JSON.parse(value) : value,
   (value: object) => JSON.stringify(value)
 );
-````
+```
 
 And register it in the registry.
 

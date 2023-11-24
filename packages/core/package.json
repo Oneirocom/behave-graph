@@ -1,12 +1,16 @@
 {
   "name": "@magickml/behave-graph",
   "version": "0.9.13",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.js",
+  "type": "commonjs",
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/node/index.js",
+  "browser": "./dist/browser/index.js",
   "source": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build:node": "tsc -p tsconfig.node.json",
+    "build:browser": "tsc -p tsconfig.browser.json",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "npm run build:types && npm run build:node && npm run build:browser",
     "dev": "tsc --watch",
     "test": "jest"
   }

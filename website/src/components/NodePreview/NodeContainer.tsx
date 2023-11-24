@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 import React, { PropsWithChildren } from 'react';
 import { categoryColorMap, colors } from './utils/colors.js';
 

@@ -1,4 +1,4 @@
-import { INode, NodeSpecJSON } from '@behave-graph/core';
+import { INode, NodeSpecJSON } from '@magickml/behave-graph';
 
 import inputsTemplate from './inputs.js';
 import outputsTemplate from './outputs.js';

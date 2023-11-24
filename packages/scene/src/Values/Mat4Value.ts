@@ -1,4 +1,4 @@
-import { ValueType } from '@behave-graph/core';
+import { ValueType } from '@magickml/behave-graph';
 
 import {
   Mat4,

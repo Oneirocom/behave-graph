@@ -8,7 +8,7 @@ import {
   NodeDefinition,
   ValueType,
   ValueTypeMap
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 import { SetSceneProperty } from './Nodes/Actions/SetSceneProperty.js';
 import { OnSceneNodeClick } from './Nodes/Events/OnSceneNodeClick.js';

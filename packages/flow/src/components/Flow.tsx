@@ -1,4 +1,4 @@
-import { GraphJSON, IRegistry } from '@behave-graph/core';
+import { GraphJSON, IRegistry } from '@magickml/behave-graph';
 import React from 'react';
 import { Background, BackgroundVariant, ReactFlow } from 'reactflow';
 

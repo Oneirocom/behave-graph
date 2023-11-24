@@ -1,5 +1,5 @@
 import React from 'react';
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 import NodeContainer from './NodeContainer.js';
 import InputSocket from './InputSocket.js';
 import OutputSocket from './OutputSocket.js';

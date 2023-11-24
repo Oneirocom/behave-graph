@@ -3,7 +3,7 @@ import {
   equalsTolerance,
   parseSafeFloats,
   toSafeString
-} from '@behave-graph/core';
+} from '@magickml/behave-graph';
 
 import { Mat4 } from './Mat4.js';
 import { Vec2 } from './Vec2.js';

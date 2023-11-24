@@ -1,4 +1,4 @@
-import { NodeSpecJSON } from '@behave-graph/core';
+import { NodeSpecJSON } from '@magickml/behave-graph';
 
 export const getSocketsByNodeTypeAndHandleType = (
   nodes: NodeSpecJSON[],

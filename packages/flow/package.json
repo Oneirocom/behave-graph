@@ -1,5 +1,5 @@
 {
-  "name": "@behave-graph/flow",
+  "name": "@magickml/behave-graph-flow",
   "version": "0.9.12",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -19,7 +19,7 @@
     "@types/uuid": "^8.3.4"
   },
   "dependencies": {
-    "@behave-graph/core": "*",
+    "@magickml/behave-graph": "*",
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",

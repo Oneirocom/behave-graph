@@ -16,21 +16,21 @@ Another neat fact about behavior graphs is that they offer a sand boxed executio
 
 ### Features
 
-* **Customizable** While this library contains a lot of nodes, you do not have to expose all of them. For example, just because this supports for-loops and state, does not mean you have to register that node type as being available.
-* **Type Safe** This library is implemented in TypeScript and fully makes use of its type safety features.
-* **Small** This is a very small library with no external dependencies.
-* **Simple** This library is implemented in a forward fashion without unnecessary complexity.
-* **High Performance** Currently in performance testing, the library achieves over 2M node executions per second.
+- **Customizable** While this library contains a lot of nodes, you do not have to expose all of them. For example, just because this supports for-loops and state, does not mean you have to register that node type as being available.
+- **Type Safe** This library is implemented in TypeScript and fully makes use of its type safety features.
+- **Small** This is a very small library with no external dependencies.
+- **Simple** This library is implemented in a forward fashion without unnecessary complexity.
+- **High Performance** Currently in performance testing, the library achieves over 2M node executions per second.
 
 ### Node Types
 
-* **Events** You can implement arbitrary events that start execution: Start, Tick
-* **Actions** You can implement actions that trigger animations, scene scene variations, or update internal state: Log
-* **Logic** You can do arithmetic, trigonometry as well as vector operations and string manipulation: Add, Subtract, Multiply, Divide, Pow, Exp, Log, Log2, Log10, Min, Max, Round, Ceil, Floor, Sign, Abs, Trunc, Sqrt, Negate, And, Or, Not, ==, >, >=, <, <=, isNan, isInfinity, concat, includes.
-* **Queries** You can query the state from the system.
-* **Flow Control** Control execution flow using familiar structures: Branch, Delay, Debounce, Throttle, FlipFlop, Sequence, Gate, MultiGate, DoOnce, DoN, ForLoop
-* **Variables** You can create, set and get variable values.
-* **Custom Events** You can create, listen to and trigger custom events.
+- **Events** You can implement arbitrary events that start execution: Start, Tick
+- **Actions** You can implement actions that trigger animations, scene scene variations, or update internal state: Log
+- **Logic** You can do arithmetic, trigonometry as well as vector operations and string manipulation: Add, Subtract, Multiply, Divide, Pow, Exp, Log, Log2, Log10, Min, Max, Round, Ceil, Floor, Sign, Abs, Trunc, Sqrt, Negate, And, Or, Not, ==, >, >=, <, <=, isNan, isInfinity, concat, includes.
+- **Queries** You can query the state from the system.
+- **Flow Control** Control execution flow using familiar structures: Branch, Delay, Debounce, Throttle, FlipFlop, Sequence, Gate, MultiGate, DoOnce, DoN, ForLoop
+- **Variables** You can create, set and get variable values.
+- **Custom Events** You can create, listen to and trigger custom events.
 
 ### Designed for Integration into Other Systems
 
@@ -50,7 +50,7 @@ Get started by **creating a new TypeScript/JavaScript project**.
 In order to use behave-graph in your project you need to install it from npm:
 
 ```bash
-npm install @behave-graph/core
+npm install @magickml/behave-graph
 ```
 
 You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
