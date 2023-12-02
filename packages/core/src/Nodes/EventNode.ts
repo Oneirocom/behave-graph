@@ -90,6 +90,8 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
 
   init = (engine: Engine): any => {
     this.state = this.initInner({
+      node: this,
+      engine: engine,
       read: this.readInput,
       write: this.writeOutput,
       state: this.state,

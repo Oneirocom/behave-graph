@@ -1,3 +1,4 @@
+import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Choices } from '../Sockets/Socket.js';
 import { AsyncNodeInstance } from './AsyncNode.js';
@@ -77,7 +78,8 @@ export type TriggeredFn<
   triggeringSocketName: keyof TInput;
   // state of the node.
   state: TState;
-
+  engine?: Engine;
+  node?: INode;
   graph: IGraph;
   configuration: NodeConfiguration;
   finished?: () => void;

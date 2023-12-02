@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.10.1
+
+### Patch Changes
+
+- 43932de: Fixes scene import and build issues
+
 ## 0.10.0
 
 ### Minor Changes
