@@ -2,7 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Fiber } from '../Execution/Fiber.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { Node, NodeConfiguration } from './Node.js';
+import { IStateService, Node, NodeConfiguration } from './Node.js';
 import { IFlowNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IFlowNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';
@@ -63,8 +63,31 @@ export class FlowNodeInstance<TFlowNodeDefinition extends IFlowNodeDefinition>
   implements IFlowNode
 {
   private triggeredInner: TFlowNodeDefinition['triggered'];
-  private state: TFlowNodeDefinition['initialState'];
+  private _state!: TFlowNodeDefinition['initialState'];
   private readonly outputSocketKeys: string[];
+
+  get state() {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      return stateService.getState(this.id, this.graph);
+    }
+    return this._state;
+  }
+
+  set state(value) {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      stateService.setState(this.id, value, this.graph);
+      return;
+    }
+    this._state = value;
+  }
 
   constructor(
     nodeProps: Omit<INode, 'nodeType'> &
