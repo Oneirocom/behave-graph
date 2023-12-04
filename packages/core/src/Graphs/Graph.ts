@@ -16,7 +16,7 @@ export interface IGraph {
   readonly variables: { [id: string]: Variable };
   readonly customEvents: { [id: string]: CustomEvent };
   readonly values: ValueTypeMap;
-  readonly getDependency: <T>(id: string) => T | undefined;
+  readonly getDependency: <T>(id: string, supress?: boolean) => T | undefined;
 }
 
 export type GraphNodes = { [id: string]: INode };
@@ -78,9 +78,9 @@ export const makeGraphApi = ({
   variables,
   customEvents,
   values,
-  getDependency: (id: string) => {
+  getDependency: (id: string, supress = false) => {
     const result = dependencies[id];
-    if (!result)
+    if (!result && !supress)
       console.error(
         `Dependency not found ${id}.  Did you register it? Existing dependencies: ${Object.keys(
           dependencies
