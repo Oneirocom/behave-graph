@@ -5,6 +5,11 @@ import { INode, NodeType } from './NodeInstance.js';
 import { readInputFromSockets, writeOutputsToSocket } from './NodeSockets.js';
 import { INodeDescription } from './Registry/NodeDescription.js';
 
+export interface IStateService {
+  getState(nodeId: string, graph: IGraph): any;
+  setState(nodeId: string, state: any, graph: IGraph): void;
+}
+
 export type NodeConfiguration = {
   [key: string]: any;
 };
