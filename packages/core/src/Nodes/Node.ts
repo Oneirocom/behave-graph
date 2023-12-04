@@ -8,6 +8,15 @@ export type NodeConfiguration = {
   [key: string]: any;
 };
 
+// fuction to generate a UUID
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c == 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 export abstract class Node<TNodeType extends NodeType> implements INode {
   public readonly inputs: Socket[];
   public readonly outputs: Socket[];
@@ -18,9 +27,11 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
   public graph: IGraph;
   public label?: string;
   public metadata: any;
+  public id: string;
   public readonly configuration: NodeConfiguration;
 
   constructor(node: Omit<INode, 'nodeType' | 'id'> & { nodeType: TNodeType }) {
+    this.id = generateUUID();
     this.inputs = node.inputs;
     this.outputs = node.outputs;
     this.description = node.description;
