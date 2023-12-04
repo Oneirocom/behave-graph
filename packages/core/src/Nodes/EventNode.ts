@@ -2,7 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { Node, NodeConfiguration } from './Node.js';
+import { IStateService, Node, NodeConfiguration } from './Node.js';
 import { IEventNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IEventNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';
@@ -74,8 +74,31 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
 {
   private initInner: TEventNodeDef['init'];
   private disposeInner: TEventNodeDef['dispose'];
-  private state: TEventNodeDef['initialState'];
+  private _state!: TEventNodeDef['initialState'];
   private readonly outputSocketKeys: string[];
+
+  get state() {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      return stateService.getState(this.id, this.graph);
+    }
+    return this._state;
+  }
+
+  set state(value) {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      stateService.setState(this.id, value, this.graph);
+      return;
+    }
+    this._state = value;
+  }
 
   constructor(
     nodeProps: Omit<INode, 'nodeType'> &
