@@ -1,5 +1,6 @@
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
+import { generateUuid } from '../generateUuid.js';
 import { INode, NodeType } from './NodeInstance.js';
 import { readInputFromSockets, writeOutputsToSocket } from './NodeSockets.js';
 import { INodeDescription } from './Registry/NodeDescription.js';
@@ -7,15 +8,6 @@ import { INodeDescription } from './Registry/NodeDescription.js';
 export type NodeConfiguration = {
   [key: string]: any;
 };
-
-// fuction to generate a UUID
-function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
 
 export abstract class Node<TNodeType extends NodeType> implements INode {
   public readonly inputs: Socket[];
@@ -31,7 +23,7 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
   public readonly configuration: NodeConfiguration;
 
   constructor(node: Omit<INode, 'nodeType' | 'id'> & { nodeType: TNodeType }) {
-    this.id = generateUUID();
+    this.id = generateUuid();
     this.inputs = node.inputs;
     this.outputs = node.outputs;
     this.description = node.description;
