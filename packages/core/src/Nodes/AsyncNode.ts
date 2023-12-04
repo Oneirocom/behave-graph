@@ -2,7 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { Node, NodeConfiguration } from './Node.js';
+import { IStateService, Node, NodeConfiguration } from './Node.js';
 import { IAsyncNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IAsyncNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';
@@ -70,7 +70,30 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
 {
   private triggeredInner: TAsyncNodeDef['triggered'];
   private disposeInner: TAsyncNodeDef['dispose'];
-  private state: TAsyncNodeDef['initialState'];
+  private _state!: TAsyncNodeDef['initialState'];
+
+  get state() {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      return stateService.getState(this.id, this.graph);
+    }
+    return this._state;
+  }
+
+  set state(value) {
+    const stateService = this.graph.getDependency<IStateService>(
+      'IStateService',
+      true
+    );
+    if (stateService) {
+      stateService.setState(this.id, value, this.graph);
+      return;
+    }
+    this._state = value;
+  }
 
   constructor(
     node: Omit<INode, 'nodeType'> &
