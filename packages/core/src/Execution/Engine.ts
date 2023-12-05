@@ -10,12 +10,14 @@ import {
   isAsyncNode,
   isEventNode
 } from '../Nodes/NodeInstance.js';
+import { generateUuid } from '../generateUuid.js';
 import { sleep } from '../sleep.js';
 import { Fiber } from './Fiber.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
 export class Engine {
   // tracking the next node+input socket to execute.
+  public readonly id = generateUuid();
   private readonly fiberQueue: Fiber[] = [];
   public readonly asyncNodes: IAsyncNode[] = [];
   public readonly eventNodes: IEventNode[] = [];
