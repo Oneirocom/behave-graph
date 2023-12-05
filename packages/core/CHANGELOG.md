@@ -1,5 +1,15 @@
 # @magickml/behave-graph
 
+## 0.11.0
+
+### Minor Changes
+
+- Adds IState Service to node states
+
+### Patch Changes
+
+- 7d8cce5: Add engine and node to event init definition
+
 ## 0.10.1
 
 ### Patch Changes
