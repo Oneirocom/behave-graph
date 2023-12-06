@@ -129,6 +129,7 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph,
+      state: this.state,
       finished,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
