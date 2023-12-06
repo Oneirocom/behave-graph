@@ -25,13 +25,14 @@ export class EaseSceneProperty extends AsyncNode {
           `scene/ease/${valueTypeName}`,
           'Action',
           `Ease Scene ${toCamelCase(valueTypeName)}`,
-          (description, graph) =>
+          (description, graph, config, id) =>
             new EaseSceneProperty(
               description,
               graph,
               valueTypeName,
               scene,
-              lifecycleEventEmitter
+              lifecycleEventEmitter,
+              id
             )
         )
     );
@@ -42,7 +43,8 @@ export class EaseSceneProperty extends AsyncNode {
     graph: IGraph,
     public readonly valueTypeName: string,
     private readonly scene: IScene,
-    private readonly lifecycleEventEmitter: ILifecycleEventEmitter
+    private readonly lifecycleEventEmitter: ILifecycleEventEmitter,
+    id: string
   ) {
     super(
       description,
@@ -68,7 +70,9 @@ export class EaseSceneProperty extends AsyncNode {
         new Socket('float', 'easeDuration'),
         new Socket('flow', 'cancel')
       ],
-      [new Socket('flow', 'flow')]
+      [new Socket('flow', 'flow')],
+      {},
+      id
     );
   }
 
