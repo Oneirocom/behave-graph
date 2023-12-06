@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.11.1
+
+### Patch Changes
+
+- Add unique id to engione class on creation
+
 ## 0.11.0
 
 ### Minor Changes
