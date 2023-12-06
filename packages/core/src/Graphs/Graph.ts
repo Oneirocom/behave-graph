@@ -1,4 +1,5 @@
 import { CustomEvent } from '../Events/CustomEvent.js';
+import { generateUuid } from '../generateUuid.js';
 import { Logger } from '../index.js';
 import { Metadata } from '../Metadata.js';
 import { NodeConfiguration } from '../Nodes/Node.js';
@@ -32,11 +33,13 @@ export type GraphInstance = {
 };
 
 export const createNode = ({
+  id = generateUuid(),
   graph,
   registry,
   nodeTypeName,
   nodeConfiguration = {}
 }: {
+  id: string;
   graph: IGraph;
   registry: IRegistry;
   nodeTypeName: string;
@@ -53,7 +56,7 @@ export const createNode = ({
     );
   }
 
-  const node = nodeDefinition.nodeFactory(graph, nodeConfiguration);
+  const node = nodeDefinition.nodeFactory(graph, nodeConfiguration, id);
 
   node.inputs.forEach((socket: Socket) => {
     if (socket.valueTypeName !== 'flow' && socket.value === undefined) {

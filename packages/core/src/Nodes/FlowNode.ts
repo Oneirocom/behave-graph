@@ -13,7 +13,8 @@ export class FlowNode extends Node<NodeType.Flow> implements IFlowNode {
     graph: IGraph,
     inputs: Socket[] = [],
     outputs: Socket[] = [],
-    configuration: NodeConfiguration = {}
+    configuration: NodeConfiguration = {},
+    id: string
   ) {
     // determine if this is an eval node
     super({
@@ -21,6 +22,7 @@ export class FlowNode extends Node<NodeType.Flow> implements IFlowNode {
         ...description,
         category: description.category as NodeCategory
       },
+      id,
       inputs,
       outputs,
       graph,
@@ -47,13 +49,15 @@ export class FlowNode2 extends FlowNode {
     inputs?: Socket[];
     outputs?: Socket[];
     configuration?: NodeConfiguration;
+    id: string;
   }) {
     super(
       props.description,
       props.graph,
       props.inputs,
       props.outputs,
-      props.configuration
+      props.configuration,
+      props.id
     );
   }
 }

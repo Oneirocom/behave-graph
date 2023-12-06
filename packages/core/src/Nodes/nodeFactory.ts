@@ -91,7 +91,8 @@ export const makeCommonProps = (
     | 'label'
   >,
   configuration: NodeConfiguration,
-  graph: IGraph
+  graph: IGraph,
+  id: string
 ): INode => ({
   description: {
     typeName: typeName,
@@ -101,6 +102,7 @@ export const makeCommonProps = (
     helpDescription,
     label
   },
+  id,
   nodeType: nodeType,
   inputs: makeOrGenerateSockets(inputs, configuration, graph),
   outputs: makeOrGenerateSockets(out, configuration, graph),

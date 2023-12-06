@@ -19,8 +19,8 @@ export class WaitAll extends FlowNode {
         defaultValue: 3
       }
     },
-    factory: (description, graph, configuration) =>
-      new WaitAll(description, graph, configuration.numInputs)
+    factory: (description, graph, config, id) =>
+      new WaitAll(description, graph, config.numInputs, config, id)
   });
 
   private isOn = true;
@@ -28,7 +28,9 @@ export class WaitAll extends FlowNode {
   constructor(
     description: NodeDescription,
     graph: IGraph,
-    private numInputs: number
+    private numInputs: number,
+    config: Record<string, unknown>,
+    id: string
   ) {
     const inputs: Socket[] = [];
     for (let i = 1; i <= numInputs; i++) {
@@ -43,7 +45,9 @@ export class WaitAll extends FlowNode {
         new Socket('flow', 'reset'),
         new Socket('boolean', 'autoReset')
       ],
-      [new Socket('flow', 'flow')]
+      [new Socket('flow', 'flow')],
+      config,
+      id
     );
 
     this.reset();

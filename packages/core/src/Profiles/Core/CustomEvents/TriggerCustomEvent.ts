@@ -20,8 +20,8 @@ export class TriggerCustomEvent extends FlowNode2 {
         defaultValue: '-1'
       }
     },
-    factory: (description, graph, configuration) =>
-      new TriggerCustomEvent(description, graph, configuration)
+    factory: (description, graph, configuration, id) =>
+      new TriggerCustomEvent(description, graph, configuration, id)
   });
 
   private readonly customEvent: CustomEvent;
@@ -29,13 +29,15 @@ export class TriggerCustomEvent extends FlowNode2 {
   constructor(
     description: NodeDescription,
     graph: IGraph,
-    configuration: NodeConfiguration
+    configuration: NodeConfiguration,
+    id: string
   ) {
     const customEvent =
       graph.customEvents[configuration.customEventId] ||
       new CustomEvent('-1', 'undefined');
     super({
       description,
+      id,
       graph,
       inputs: [
         new Socket('flow', 'flow'),

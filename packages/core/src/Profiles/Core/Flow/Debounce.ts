@@ -12,10 +12,16 @@ export class Debounce extends AsyncNode {
     'flow/debounce',
     'Flow',
     'Debounce',
-    (description, graph) => new Debounce(description, graph)
+    (description, graph, config, id) =>
+      new Debounce(description, graph, config, id)
   );
 
-  constructor(description: NodeDescription, graph: IGraph) {
+  constructor(
+    description: NodeDescription,
+    graph: IGraph,
+    config: Record<string, unknown>,
+    id: string
+  ) {
     super(
       description,
       graph,
@@ -24,7 +30,9 @@ export class Debounce extends AsyncNode {
         new Socket('float', 'waitDuration'),
         new Socket('flow', 'cancel')
       ],
-      [new Socket('flow', 'flow')]
+      [new Socket('flow', 'flow')],
+      config,
+      id
     );
   }
 

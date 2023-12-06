@@ -27,8 +27,8 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
   public id: string;
   public readonly configuration: NodeConfiguration;
 
-  constructor(node: Omit<INode, 'nodeType' | 'id'> & { nodeType: TNodeType }) {
-    this.id = generateUuid();
+  constructor(node: Omit<INode, 'nodeType'> & { nodeType: TNodeType }) {
+    this.id = node.id;
     this.inputs = node.inputs;
     this.outputs = node.outputs;
     this.description = node.description;

@@ -184,6 +184,7 @@ function readNodeJSON({
   }
 
   const node = createNode({
+    id: nodeJson.id,
     graph,
     registry,
     nodeTypeName: nodeName,

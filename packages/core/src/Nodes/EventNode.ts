@@ -2,6 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
+import { generateUuid } from '../generateUuid.js';
 import { IStateService, Node, NodeConfiguration } from './Node.js';
 import { IEventNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IEventNode, INode, NodeType } from './NodeInstance.js';
@@ -14,7 +15,8 @@ export class EventNode extends Node<NodeType.Event> implements IEventNode {
     graph: IGraph,
     inputs: Socket[] = [],
     outputs: Socket[] = [],
-    configuration: NodeConfiguration = {}
+    configuration: NodeConfiguration = {},
+    id: string
   ) {
     super({
       ...description,
@@ -22,6 +24,7 @@ export class EventNode extends Node<NodeType.Event> implements IEventNode {
         ...description,
         category: description.category as NodeCategory
       },
+      id,
       inputs,
       outputs,
       graph,
@@ -57,13 +60,15 @@ export class EventNode2 extends EventNode {
     inputs?: Socket[];
     outputs?: Socket[];
     configuration?: NodeConfiguration;
+    id: string;
   }) {
     super(
       props.description,
       props.graph,
       props.inputs,
       props.outputs,
-      props.configuration
+      props.configuration,
+      props.id
     );
   }
 }

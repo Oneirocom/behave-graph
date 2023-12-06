@@ -33,7 +33,8 @@ export interface INodeDescription {
 export type NodeFactoryWithDescription = (
   entry: NodeDescription,
   graph: IGraph,
-  config: NodeConfiguration
+  config: NodeConfiguration,
+  id: string
 ) => INode;
 
 export class NodeDescription implements INodeDescription, IHasNodeFactory {
@@ -49,7 +50,7 @@ export class NodeDescription implements INodeDescription, IHasNodeFactory {
 
     public readonly configuration: NodeConfigurationDescription = {}
   ) {
-    this.nodeFactory = (graph, config) => factory(this, graph, config);
+    this.nodeFactory = (graph, config, id) => factory(this, graph, config, id);
   }
 }
 

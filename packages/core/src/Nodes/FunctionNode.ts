@@ -23,13 +23,15 @@ export abstract class FunctionNode
     inputs: Socket[] = [],
     outputs: Socket[] = [],
     public readonly exec: (node: INode) => void,
-    configuration: NodeConfiguration = {}
+    configuration: NodeConfiguration = {},
+    id: string
   ) {
     super({
       description: {
         ...description,
         category: description.category as NodeCategory
       },
+      id,
       inputs,
       outputs,
       graph,

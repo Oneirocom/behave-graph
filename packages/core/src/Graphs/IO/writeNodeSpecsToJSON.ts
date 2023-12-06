@@ -29,6 +29,7 @@ export function writeNodeSpecsToJSON(registry: IRegistry): NodeSpecJSON[] {
 
   Object.keys(registry.nodes).forEach((nodeTypeName) => {
     const node = createNode({
+      id: '0',
       graph,
       registry,
       nodeTypeName

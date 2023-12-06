@@ -2,6 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
+import { generateUuid } from '../generateUuid.js';
 import { IStateService, Node, NodeConfiguration } from './Node.js';
 import { IAsyncNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IAsyncNode, INode, NodeType } from './NodeInstance.js';
@@ -14,13 +15,15 @@ export class AsyncNode extends Node<NodeType.Async> {
     graph: IGraph,
     inputs: Socket[] = [],
     outputs: Socket[] = [],
-    configuration: NodeConfiguration = {}
+    configuration: NodeConfiguration = {},
+    id: string
   ) {
     super({
       description: {
         ...description,
         category: description.category as NodeCategory
       },
+      id,
       inputs,
       outputs,
       graph,
@@ -59,8 +62,16 @@ export class AsyncNode2 extends AsyncNode {
     graph: IGraph;
     inputs?: Socket[];
     outputs?: Socket[];
+    id: string;
   }) {
-    super(props.description, props.graph, props.inputs, props.outputs);
+    super(
+      props.description,
+      props.graph,
+      props.inputs,
+      props.outputs,
+      {},
+      props.id
+    );
   }
 }
 

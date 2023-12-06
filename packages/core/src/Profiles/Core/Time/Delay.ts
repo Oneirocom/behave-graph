@@ -16,15 +16,23 @@ export class Delay extends AsyncNode {
     otherTypeNames: ['flow/delay'],
     category: 'Time',
     label: 'Delay',
-    factory: (description, graph) => new Delay(description, graph)
+    factory: (description, graph, config, id) =>
+      new Delay(description, graph, config, id)
   });
 
-  constructor(description: NodeDescription, graph: IGraph) {
+  constructor(
+    description: NodeDescription,
+    graph: IGraph,
+    config: Record<string, unknown>,
+    id: string
+  ) {
     super(
       description,
       graph,
       [new Socket('flow', 'flow'), new Socket('float', 'duration', 1)],
-      [new Socket('flow', 'flow')]
+      [new Socket('flow', 'flow')],
+      config,
+      id
     );
   }
 

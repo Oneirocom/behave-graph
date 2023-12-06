@@ -20,6 +20,7 @@ export interface INode {
   description: INodeDescription;
   configuration: NodeConfiguration;
   nodeType: NodeType;
+  id: string;
   label?: string;
   metadata?: any;
 }

@@ -12,10 +12,16 @@ export class Throttle extends AsyncNode {
     'flow/throttle',
     'Flow',
     'Throttle',
-    (description, graph) => new Throttle(description, graph)
+    (description, graph, config, id) =>
+      new Throttle(description, graph, config, id)
   );
 
-  constructor(description: NodeDescription, graph: IGraph) {
+  constructor(
+    description: NodeDescription,
+    graph: IGraph,
+    config: Record<string, unknown>,
+    id: string
+  ) {
     super(
       description,
       graph,
@@ -24,7 +30,9 @@ export class Throttle extends AsyncNode {
         new Socket('float', 'duration', 1),
         new Socket('flow', 'cancel')
       ],
-      [new Socket('flow', 'flow')]
+      [new Socket('flow', 'flow')],
+      config,
+      id
     );
   }
 

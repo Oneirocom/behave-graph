@@ -34,7 +34,11 @@ export type SocketsGeneratorFromConfig = (
 
 export type SocketsDefinition = SocketsMap | SocketsGeneratorFromConfig;
 
-export type NodeFactory = (graph: IGraph, config: NodeConfiguration) => INode;
+export type NodeFactory = (
+  graph: IGraph,
+  config: NodeConfiguration,
+  id: string
+) => INode;
 
 export interface IHasNodeFactory {
   readonly nodeFactory: NodeFactory;
@@ -197,9 +201,9 @@ export function makeFlowNodeDefinition<
 ): IFlowNodeDefinition<TInput, TOutput, TConfig, TState> {
   return {
     ...definition,
-    nodeFactory: (graph, config) =>
+    nodeFactory: (graph, config, id) =>
       new FlowNodeInstance({
-        ...makeCommonProps(NodeType.Flow, definition, config, graph),
+        ...makeCommonProps(NodeType.Flow, definition, config, graph, id),
         initialState: definition.initialState,
         triggered: definition.triggered
       })
@@ -218,9 +222,9 @@ export function makeAsyncNodeDefinition<
 ): IAsyncNodeDefinition<TInput, TOutput, TConfig, TState> {
   return {
     ...definition,
-    nodeFactory: (graph, config) =>
+    nodeFactory: (graph, config, id) =>
       new AsyncNodeInstance({
-        ...makeCommonProps(NodeType.Async, definition, config, graph),
+        ...makeCommonProps(NodeType.Async, definition, config, graph, id),
         initialState: definition.initialState,
         triggered: definition.triggered,
         dispose: definition.dispose
@@ -238,9 +242,15 @@ export function makeFunctionNodeDefinition<
 ): IFunctionNodeDefinition<TInput, TOutput> {
   return {
     ...definition,
-    nodeFactory: (graph, nodeConfig) =>
+    nodeFactory: (graph, nodeConfig, id) =>
       new FunctionNodeInstance({
-        ...makeCommonProps(NodeType.Function, definition, nodeConfig, graph),
+        ...makeCommonProps(
+          NodeType.Function,
+          definition,
+          nodeConfig,
+          graph,
+          id
+        ),
         exec: definition.exec
       })
   };
@@ -258,9 +268,9 @@ export function makeEventNodeDefinition<
 ): IEventNodeDefinition<TInput, TOutput, TConfig, TState> {
   return {
     ...definition,
-    nodeFactory: (graph, config) =>
+    nodeFactory: (graph, config, id) =>
       new EventNodeInstance({
-        ...makeCommonProps(NodeType.Event, definition, config, graph),
+        ...makeCommonProps(NodeType.Event, definition, config, graph, id),
         initialState: definition.initialState,
         init: definition.init,
         dispose: definition.dispose

@@ -21,8 +21,8 @@ export class OnCustomEvent extends EventNode2 {
         defaultValue: '-1'
       }
     },
-    factory: (description, graph, configuration) =>
-      new OnCustomEvent(description, graph, configuration)
+    factory: (description, graph, configuration, id) =>
+      new OnCustomEvent(description, graph, configuration, id)
   });
 
   private readonly customEvent: CustomEvent;
@@ -30,7 +30,8 @@ export class OnCustomEvent extends EventNode2 {
   constructor(
     description: NodeDescription,
     graph: IGraph,
-    configuration: NodeConfiguration
+    configuration: NodeConfiguration,
+    id: string
   ) {
     const customEvent =
       graph.customEvents[configuration.customEventId] ||
@@ -50,7 +51,8 @@ export class OnCustomEvent extends EventNode2 {
             )
         )
       ],
-      configuration
+      configuration,
+      id
     });
     this.customEvent = customEvent;
   }
