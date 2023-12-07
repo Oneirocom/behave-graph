@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.12.0
+
+### Minor Changes
+
+- Convert nodes and add support for individual node ids.
+
 ## 0.11.1
 
 ### Patch Changes

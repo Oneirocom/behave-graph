@@ -1,5 +1,16 @@
 # @magickml/behave-graph-scene
 
+## 0.11.0
+
+### Minor Changes
+
+- Convert nodes and add support for individual node ids.
+
+### Patch Changes
+
+- Updated dependencies
+  - @magickml/behave-graph@0.12.0
+
 ## 0.10.1
 
 ### Patch Changes
