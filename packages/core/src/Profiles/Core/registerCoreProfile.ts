@@ -83,7 +83,7 @@ export const getCoreNodesMap = memo<Record<string, NodeDefinition>>(() => {
     LifecycleOnTick,
 
     // time
-    Delay.Description,
+    Delay,
     ...getNodeDescriptions(TimeNodes),
 
     // flow control
