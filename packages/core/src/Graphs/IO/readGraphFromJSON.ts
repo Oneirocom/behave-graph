@@ -195,6 +195,8 @@ function readNodeJSON({
   node.metadata = nodeJson?.metadata ?? node.metadata;
 
   if (nodeJson.parameters !== undefined) {
+    // watch this for bugs
+    if (nodeJson.parameters.id) delete nodeJson.parameters.id;
     readNodeParameterJSON(registry.values, node, nodeJson.parameters);
   }
   if (nodeJson.flows !== undefined) {

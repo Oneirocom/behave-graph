@@ -33,7 +33,7 @@ export class Engine {
       }
     });
     // init all event nodes at startup
-    this.eventNodes.forEach((eventNode) => {
+    this.eventNodes.forEach(async (eventNode) => {
       // evaluate input parameters
       eventNode.inputs.forEach((inputSocket) => {
         Assert.mustBeTrue(inputSocket.valueTypeName !== 'flow');
@@ -41,7 +41,7 @@ export class Engine {
       });
 
       this.onNodeExecutionStart.emit(eventNode);
-      eventNode.init(this);
+      await eventNode.init(this);
       this.executionSteps++;
       this.onNodeExecutionEnd.emit(eventNode);
     });
@@ -85,7 +85,10 @@ export class Engine {
   }
 
   // NOTE: This does not execute all if there are promises.
-  executeAllSync(limitInSeconds = 100, limitInSteps = 100000000): number {
+  async executeAllSync(
+    limitInSeconds = 100,
+    limitInSteps = 100000000
+  ): Promise<number> {
     const startDateTime = Date.now();
     let elapsedSeconds = 0;
     let elapsedSteps = 0;
@@ -96,7 +99,7 @@ export class Engine {
     ) {
       const currentFiber = this.fiberQueue[0];
       const startingFiberExecutionSteps = currentFiber.executionSteps;
-      currentFiber.executeStep();
+      await currentFiber.executeStep();
       elapsedSteps += currentFiber.executionSteps - startingFiberExecutionSteps;
       if (currentFiber.isCompleted()) {
         // remove first element
@@ -122,7 +125,7 @@ export class Engine {
         // eslint-disable-next-line no-await-in-loop
         await sleep(0);
       }
-      elapsedSteps += this.executeAllSync(
+      elapsedSteps += await this.executeAllSync(
         limitInSeconds - elapsedTime,
         limitInSteps - elapsedSteps
       );

@@ -16,6 +16,10 @@ export class Debounce extends AsyncNode {
       new Debounce(description, graph, config, id)
   );
 
+  private initialState = {
+    triggerVersion: 0
+  };
+
   constructor(
     description: NodeDescription,
     graph: IGraph,
@@ -34,25 +38,28 @@ export class Debounce extends AsyncNode {
       config,
       id
     );
+
+    this.setState(this.initialState);
   }
 
-  private triggerVersion = 0;
-
-  triggered(
+  async triggered(
     engine: Engine,
     triggeringSocketName: string,
     finished: () => void
   ) {
-    this.triggerVersion++;
+    const state = await this.getState();
+    let newState = { ...state };
+
+    newState.triggerVersion++;
 
     // if cancelling, just increment triggerVersion and do not set a timer. :)
     if (triggeringSocketName === 'cancel') {
       return;
     }
 
-    const localTriggerCount = this.triggerVersion;
+    const localTriggerCount = newState.triggerVersion;
     setTimeout(() => {
-      if (this.triggerVersion >= localTriggerCount) {
+      if (newState.triggerVersion >= localTriggerCount) {
         // ignore this timer, as it isn't for the most recent trigger
         return;
       }
@@ -60,9 +67,12 @@ export class Debounce extends AsyncNode {
       engine.commitToNewFiber(this, 'flow');
       finished();
     }, this.readInput<number>('waitDuration') * 1000);
+    await this.setState(newState);
   }
 
-  dispose() {
-    this.triggerVersion++; // equivalent to 'cancel' trigger behavior.
+  async dispose() {
+    const state = await this.getState();
+    state.triggerVersion++; // equivalent to 'cancel' trigger behavior.
+    await this.setState(state);
   }
 }

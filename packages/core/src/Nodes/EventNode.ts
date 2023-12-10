@@ -79,31 +79,7 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
 {
   private initInner: TEventNodeDef['init'];
   private disposeInner: TEventNodeDef['dispose'];
-  private _state!: TEventNodeDef['initialState'];
   private readonly outputSocketKeys: string[];
-
-  get state() {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      return stateService.getState(this.id, this.graph);
-    }
-    return this._state;
-  }
-
-  set state(value) {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      stateService.setState(this.id, value, this.graph);
-      return;
-    }
-    this._state = value;
-  }
 
   constructor(
     nodeProps: Omit<INode, 'nodeType'> &
@@ -112,28 +88,32 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
     super({ ...nodeProps, nodeType: NodeType.Event });
     this.initInner = nodeProps.init;
     this.disposeInner = nodeProps.dispose;
-    this.state = nodeProps.initialState;
+    this.setState(nodeProps.initialState);
     this.outputSocketKeys = nodeProps.outputs.map((s) => s.name);
   }
 
-  init = (engine: Engine): any => {
-    this.state = this.initInner({
+  init = async (engine: Engine): Promise<any> => {
+    const currentState = await this.getState();
+    const state = this.initInner({
       node: this,
       engine: engine,
       read: this.readInput,
       write: this.writeOutput,
-      state: this.state,
+      state: currentState,
       outputSocketKeys: this.outputSocketKeys,
       commit: (outFlowname, fiberCompletedListener) =>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph
     });
+    await this.setState(state);
   };
 
-  dispose(): void {
+  async dispose(): Promise<void> {
+    const currentState = await this.getState();
     this.disposeInner({
-      state: this.state,
+      state: currentState,
+      setState: this.setState,
       graph: this.graph
     });
   }

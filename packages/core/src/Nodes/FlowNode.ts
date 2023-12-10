@@ -67,55 +67,36 @@ export class FlowNodeInstance<TFlowNodeDefinition extends IFlowNodeDefinition>
   implements IFlowNode
 {
   private triggeredInner: TFlowNodeDefinition['triggered'];
-  private _state!: TFlowNodeDefinition['initialState'];
+  // private _state!: TFlowNodeDefinition['initialState'];
   private readonly outputSocketKeys: string[];
-
-  get state() {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      return stateService.getState(this.id, this.graph);
-    }
-    return this._state;
-  }
-
-  set state(value) {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      stateService.setState(this.id, value, this.graph);
-      return;
-    }
-    this._state = value;
-  }
-
   constructor(
     nodeProps: Omit<INode, 'nodeType'> &
       Pick<TFlowNodeDefinition, 'triggered' | 'initialState'>
   ) {
     super({ ...nodeProps, nodeType: NodeType.Flow });
     this.triggeredInner = nodeProps.triggered;
-    this.state = nodeProps.initialState;
+    this.setState(nodeProps.initialState);
     this.outputSocketKeys = nodeProps.outputs.map((s) => s.name);
   }
 
-  public triggered = (fiber: Fiber, triggeringSocketName: string) => {
-    this.state = this.triggeredInner({
+  public triggered = async (fiber: Fiber, triggeringSocketName: string) => {
+    const currentState = await this.getState();
+    const nextState = await this.triggeredInner({
       commit: (outFlowName, fiberCompletedListener) =>
         fiber.commit(this, outFlowName, fiberCompletedListener),
       read: this.readInput,
       write: this.writeOutput,
       graph: this.graph,
-      state: this.state,
+      state: currentState,
+      setState: this.setState,
+      getState: this.getState,
       configuration: this.configuration,
       outputSocketKeys: this.outputSocketKeys,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       triggeringSocketName
     });
+
+    await this.setState(nextState);
   };
 }

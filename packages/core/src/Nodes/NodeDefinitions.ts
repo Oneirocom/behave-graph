@@ -127,7 +127,11 @@ export interface IHasInit<
 }
 
 export interface IHasDispose<TState> {
-  dispose: (params: { state: TState; graph: IGraph }) => StateReturn<TState>;
+  dispose: (params: {
+    state: TState;
+    setState: (state: TState) => void;
+    graph: IGraph;
+  }) => StateReturn<TState>;
 }
 
 export interface IFlowNodeDefinition<

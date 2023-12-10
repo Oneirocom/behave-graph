@@ -58,7 +58,7 @@ export class Fiber {
   }
 
   // returns the number of new execution steps created as a result of this one step
-  executeStep() {
+  async executeStep() {
     // pop the next node off the queue
     const link = this.nextEval;
     this.nextEval = null;
@@ -89,7 +89,7 @@ export class Fiber {
     this.engine.onNodeExecutionStart.emit(node);
     if (isAsyncNode(node)) {
       this.engine.asyncNodes.push(node);
-      node.triggered(this.engine, link.socketName, () => {
+      await node.triggered(this.engine, link.socketName, () => {
         // remove from the list of pending async nodes
         const index = this.engine.asyncNodes.indexOf(node);
         this.engine.asyncNodes.splice(index, 1);
@@ -99,7 +99,7 @@ export class Fiber {
       return;
     }
     if (isFlowNode(node)) {
-      node.triggered(this, link.socketName);
+      await node.triggered(this, link.socketName);
       this.engine.onNodeExecutionEnd.emit(node);
       this.executionSteps++;
       return;

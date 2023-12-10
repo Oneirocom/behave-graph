@@ -81,30 +81,6 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
 {
   private triggeredInner: TAsyncNodeDef['triggered'];
   private disposeInner: TAsyncNodeDef['dispose'];
-  private _state!: TAsyncNodeDef['initialState'];
-
-  get state() {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      return stateService.getState(this.id, this.graph);
-    }
-    return this._state;
-  }
-
-  set state(value) {
-    const stateService = this.graph.getDependency<IStateService>(
-      'IStateService',
-      true
-    );
-    if (stateService) {
-      stateService.setState(this.id, value, this.graph);
-      return;
-    }
-    this._state = value;
-  }
 
   constructor(
     node: Omit<INode, 'nodeType'> &
@@ -114,7 +90,7 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
 
     this.triggeredInner = node.triggered;
     this.disposeInner = node.dispose;
-    this.state = node.initialState;
+    this.setState(node.initialState);
   }
 
   triggered = (
@@ -129,14 +105,21 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph,
-      state: this.state,
+      setState: this.setState,
+      getState: this.getState,
       finished,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       triggeringSocketName
     });
   };
-  dispose = () => {
-    this.state = this.disposeInner({ state: this.state, graph: this.graph });
+  dispose = async () => {
+    const currentState = this.getState();
+    const state = this.disposeInner({
+      state: currentState,
+      setState: this.setState,
+      graph: this.graph
+    });
+    this.setState(state);
   };
 }

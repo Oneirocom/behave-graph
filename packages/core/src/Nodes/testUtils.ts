@@ -148,7 +148,7 @@ export const generateTriggerTester = <
       },
       configuration,
       graph,
-      state: state,
+      state,
       finished: () => {
         return;
       },
