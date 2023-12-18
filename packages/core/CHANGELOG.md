@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.0
+
+### Minor Changes
+
+- Changed graph to execute async aawait and added state functions
+
 ## 0.12.0
 
 ### Minor Changes

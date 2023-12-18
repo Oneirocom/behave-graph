@@ -16,6 +16,10 @@ export type FlowsJSON = {
   [key: string]: LinkJSON;
 };
 
+export type NodeConfigJSON = {
+  [key: string]: ValueJSON;
+};
+
 export type NodeConfigurationJSON = {
   [key: string]: ValueJSON;
 };
