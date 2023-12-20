@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.1
+
+### Patch Changes
+
+- fixed bug on async node definition state
+
 ## 0.13.0
 
 ### Minor Changes
