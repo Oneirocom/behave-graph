@@ -90,28 +90,31 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
 
     this.triggeredInner = node.triggered;
     this.disposeInner = node.dispose;
+
     this.setState(node.initialState);
   }
 
-  triggered = (
+  triggered = async (
     engine: Pick<Engine, 'commitToNewFiber'>,
     triggeringSocketName: string,
     finished: () => void
   ) => {
-    this.triggeredInner({
+    const currentState = await this.getState();
+    const nextState = await this.triggeredInner({
       read: this.readInput,
       write: this.writeOutput,
       commit: (outFlowname, fiberCompletedListener) =>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph,
-      setState: this.setState,
-      getState: this.getState,
+      state: currentState,
       finished,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       triggeringSocketName
     });
+
+    await this.setState(nextState);
   };
   dispose = async () => {
     const currentState = this.getState();
