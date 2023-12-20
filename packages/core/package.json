@@ -1,6 +1,6 @@
 {
   "name": "@magickml/behave-graph",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "type": "commonjs",
   "types": "./dist/types/index.d.ts",
   "main": "./dist/node/index.js",
@@ -10,8 +10,7 @@
     "postbuild": "node postbuild.js",
     "build:node": "tsc -p tsconfig.node.json",
     "build:browser": "tsc -p tsconfig.browser.json",
-    "build:types": "tsc -p --emitDeclarationOnly",
-    "build": "npm run build:types && npm run build:node && npm run build:browser && npm run postbuild",
+    "build": " npm run build:node && npm run build:browser && npm run postbuild",
     "dev": "tsc --watch",
     "test": "jest"
   }

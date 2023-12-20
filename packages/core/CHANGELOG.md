@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.2
+
+### Patch Changes
+
+- Update build process
+
 ## 0.13.1
 
 ### Patch Changes
