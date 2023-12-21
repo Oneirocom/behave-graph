@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.3
+
+### Patch Changes
+
+- Export node factory helpers
+
 ## 0.13.2
 
 ### Patch Changes
