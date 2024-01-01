@@ -1,6 +1,12 @@
 import { Metadata } from '../../Metadata.js';
 
-export type ValueJSON = string | boolean | number | number[];
+export type ValueJSON =
+  | string
+  | boolean
+  | number
+  | number[]
+  | Record<string, any>
+  | any[];
 
 export type LinkJSON = { nodeId: string; socket: string };
 
