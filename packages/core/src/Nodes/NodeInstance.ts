@@ -27,7 +27,7 @@ export interface INode {
 
 export interface IFunctionNode extends INode {
   nodeType: NodeType.Function;
-  exec: (node: INode) => void;
+  exec: (node: INode) => void | Promise<void>;
 }
 
 export interface IEventNode extends INode {
@@ -38,7 +38,10 @@ export interface IEventNode extends INode {
 
 export interface IFlowNode extends INode {
   nodeType: NodeType.Flow;
-  triggered: (fiber: Fiber, triggeringSocketName: string) => void;
+  triggered: (
+    fiber: Fiber,
+    triggeringSocketName: string
+  ) => void | Promise<void>;
 }
 
 export interface IAsyncNode extends INode {

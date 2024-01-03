@@ -35,10 +35,11 @@ export class Engine {
     // init all event nodes at startup
     this.eventNodes.forEach(async (eventNode) => {
       // evaluate input parameters
-      eventNode.inputs.forEach((inputSocket) => {
+
+      for (const inputSocket of eventNode.inputs) {
         Assert.mustBeTrue(inputSocket.valueTypeName !== 'flow');
-        this.executionSteps += resolveSocketValue(this, inputSocket);
-      });
+        this.executionSteps += await resolveSocketValue(this, inputSocket);
+      }
 
       this.onNodeExecutionStart.emit(eventNode);
       await eventNode.init(this);

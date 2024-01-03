@@ -22,7 +22,7 @@ export abstract class FunctionNode
     graph: IGraph,
     inputs: Socket[] = [],
     outputs: Socket[] = [],
-    public readonly exec: (node: INode) => void,
+    public readonly exec: (node: INode) => Promise<void> | void,
     configuration: NodeConfiguration = {},
     id: string
   ) {
@@ -66,8 +66,8 @@ export class FunctionNodeInstance<
     this.execInner = nodeProps.exec;
   }
 
-  exec = (node: INode) => {
-    this.execInner({
+  exec = async (node: INode) => {
+    await this.execInner({
       read: (name) =>
         readInputFromSockets(node.inputs, name, node.description.typeName),
       write: (name, value) =>
@@ -122,7 +122,7 @@ export function makeInNOutFunctionDesc({
   in?: (string | { [key: string]: string })[];
   out: (string | { [key: string]: string })[] | string;
   category?: NodeCategory;
-  exec: (...args: any[]) => any;
+  exec: (...args: any[]) => Promise<any> | any;
 }) {
   const inputSockets = makeSocketsList(inputs, getAlphabeticalKey);
   const outputKeyFunc =
@@ -138,9 +138,9 @@ export function makeInNOutFunctionDesc({
     in: () => inputSockets,
     out: () => outputSockets,
     category,
-    exec: ({ read, write }) => {
+    exec: async ({ read, write }) => {
       const args = inputSockets.map(({ key }) => read(key));
-      const results = exec(...args);
+      const results = await exec(...args);
       if (outputSockets.length === 1 && outputSockets[0].key === 'result') {
         write('result', results);
       } else {

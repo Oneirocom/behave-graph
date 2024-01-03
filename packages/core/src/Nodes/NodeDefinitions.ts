@@ -177,7 +177,9 @@ export interface IFunctionNodeDefinition<
   TOutput extends SocketsDefinition = SocketsDefinition,
   TConfig extends NodeConfigurationDescription = NodeConfigurationDescription
 > extends INodeDefinition<TInput, TOutput, TConfig> {
-  exec: (params: FunctionNodeExecParams<TInput, TOutput>) => void;
+  exec: (
+    params: FunctionNodeExecParams<TInput, TOutput>
+  ) => Promise<void> | void;
 }
 
 export interface IEventNodeDefinition<

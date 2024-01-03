@@ -78,11 +78,14 @@ export class Fiber {
 
     const node = this.nodes[link.nodeId];
 
-    node.inputs.forEach((inputSocket) => {
+    for (const inputSocket of node.inputs) {
       if (inputSocket.valueTypeName !== 'flow') {
-        this.executionSteps += resolveSocketValue(this.engine, inputSocket);
+        this.executionSteps += await resolveSocketValue(
+          this.engine,
+          inputSocket
+        );
       }
-    });
+    }
 
     // first resolve all input values
     // flow socket is set to true for the one flowing in, while all others are set to false.
