@@ -54,11 +54,9 @@ export async function resolveSocketValue(
     }
 
     engine.onNodeExecutionStart.emit(upstreamNode);
-    console.warn('EXECUTING ASYNC');
     await upstreamNode.exec(upstreamNode);
     executionSteps++;
     engine.onNodeExecutionEnd.emit(upstreamNode);
-    console.warn('UPSTREAM SOCKET VALUE', upstreamOutputSocket.value);
 
     // get the output value we wanted.
     inputSocket.value = upstreamOutputSocket.value;
