@@ -5,3 +5,4 @@ node-spec.json
 *.blend1
 node-spec.csv
 **/public/js
+.nx
