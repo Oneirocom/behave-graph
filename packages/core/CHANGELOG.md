@@ -1,5 +1,17 @@
 # @magickml/behave-graph
 
+## 0.13.5
+
+### Patch Changes
+
+- Support asycn pure functions. Reduces speed but gives more flexible value access.
+
+## 0.13.4
+
+### Patch Changes
+
+- Expand the values allowed for ValueJSON
+
 ## 0.13.3
 
 ### Patch Changes
