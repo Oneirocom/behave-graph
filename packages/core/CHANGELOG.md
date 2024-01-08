@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.6
+
+### Patch Changes
+
+- Resolve socket values on commit callback and fix delay node
+
 ## 0.13.5
 
 ### Patch Changes
