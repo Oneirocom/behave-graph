@@ -82,12 +82,14 @@ export type TriggeredFn<
   triggeringSocketName: keyof TInput;
   // state of the node.
   state: TState;
+  setState: (state: TState) => void;
+  getState: () => TState;
   engine?: Engine;
   node?: INode;
   graph: IGraph;
   configuration: NodeConfiguration;
   finished?: () => void;
-}) => StateReturn<TState>;
+}) => StateReturn<TState> | Promise<StateReturn<TState>>;
 
 /** Flow Node Definition */
 export type TriggeredParams<

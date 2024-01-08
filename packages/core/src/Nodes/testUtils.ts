@@ -149,6 +149,12 @@ export const generateTriggerTester = <
       configuration,
       graph,
       state,
+      setState: (newState) => {
+        state = newState;
+      },
+      getState: () => {
+        return state;
+      },
       finished: () => {
         return;
       },

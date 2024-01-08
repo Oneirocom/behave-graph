@@ -100,6 +100,8 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
       read: this.readInput,
       write: this.writeOutput,
       state: currentState,
+      setState: this.setState,
+      getState: this.getState,
       outputSocketKeys: this.outputSocketKeys,
       commit: (outFlowname, fiberCompletedListener) =>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),

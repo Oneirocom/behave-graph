@@ -24,7 +24,14 @@ export const Delay = makeAsyncNodeDefinition({
   initialState: {
     timeoutPending: false
   },
-  triggered: ({ state, finished = () => {}, commit, read }) => {
+  triggered: async ({
+    state,
+    setState,
+    getState,
+    finished = () => {},
+    commit,
+    read
+  }) => {
     // if there is a valid timeout running, leave it.
     if (state.timeoutPending) {
       return {
@@ -33,12 +40,20 @@ export const Delay = makeAsyncNodeDefinition({
     }
 
     // otherwise start it.
-    state.timeoutPending = true;
+    await setState({
+      ...state,
+      timeoutPending: true
+    });
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // check if cancelled
-      if (!state.timeoutPending) return;
-      state.timeoutPending = false;
+      const newState = await getState();
+      if (!newState.timeoutPending) return;
+
+      await setState({
+        ...newState,
+        timeoutPending: false
+      });
       commit('flow');
       finished();
     }, read<number>('duration') * 1000);
