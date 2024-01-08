@@ -108,6 +108,8 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
       configuration: this.configuration,
       graph: this.graph,
       state: currentState,
+      getState: this.getState,
+      setState: this.setState,
       finished,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

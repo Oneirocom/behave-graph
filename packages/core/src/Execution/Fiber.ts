@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import { Assert } from '../Diagnostics/Assert.js';
 import { GraphNodes } from '../Graphs/Graph.js';
 import { Link } from '../Nodes/Link.js';
@@ -13,11 +14,22 @@ export class Fiber {
   constructor(
     public engine: Engine,
     public nextEval: Link | null,
-    fiberCompletedListener: (() => void) | undefined = undefined
+    fiberCompletedListener: (() => void) | undefined = undefined,
+    node: INode | undefined = undefined
   ) {
     this.nodes = engine.nodes;
     if (fiberCompletedListener !== undefined) {
-      this.fiberCompletedListenerStack.push(fiberCompletedListener);
+      const wrappedFiberCompletedListener = () => {
+        if (node) {
+          this.resolveAllInputValues(node).then(() => {
+            fiberCompletedListener();
+          });
+          return;
+        }
+
+        fiberCompletedListener();
+      };
+      this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
     }
   }
 
@@ -53,7 +65,26 @@ export class Fiber {
     }
 
     if (fiberCompletedListener !== undefined) {
-      this.fiberCompletedListenerStack.push(fiberCompletedListener);
+      const wrappedFiberCompletedListener = () => {
+        this.resolveAllInputValues(node).then(() => {
+          fiberCompletedListener();
+        });
+      };
+
+      this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
+    }
+  }
+
+  async resolveAllInputValues(node: INode) {
+    const promises = node.inputs
+      .filter((inputSocket) => inputSocket.valueTypeName !== 'flow')
+      .map((inputSocket) => resolveSocketValue(this.engine, inputSocket));
+
+    const results = await Promise.all(promises);
+
+    // Assuming executionSteps is a number and resolveSocketValue returns a number
+    for (const result of results) {
+      this.executionSteps += result;
     }
   }
 

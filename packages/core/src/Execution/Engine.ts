@@ -79,7 +79,8 @@ export class Engine {
       const fiber = new Fiber(
         this,
         outputSocket.links[0],
-        fiberCompletedListener
+        fiberCompletedListener,
+        node
       );
       this.fiberQueue.push(fiber);
     }
