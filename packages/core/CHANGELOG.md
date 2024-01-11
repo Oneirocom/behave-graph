@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.13.7
+
+### Patch Changes
+
+- Fix for fiber callbacks with async functions
+
 ## 0.13.6
 
 ### Patch Changes
