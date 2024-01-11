@@ -7,7 +7,7 @@ import { Engine } from './Engine.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
 export class Fiber {
-  private readonly fiberCompletedListenerStack: (() => void)[] = [];
+  private readonly fiberCompletedListenerStack: (() => Promise<void>)[] = [];
   private readonly nodes: GraphNodes;
   public executionSteps = 0;
 
@@ -19,11 +19,11 @@ export class Fiber {
   ) {
     this.nodes = engine.nodes;
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = () => {
+      const wrappedFiberCompletedListener = async () => {
         if (node) {
-          this.resolveAllInputValues(node).then(() => {
-            fiberCompletedListener();
-          });
+          await this.resolveAllInputValues(node);
+
+          fiberCompletedListener();
           return;
         }
 
@@ -65,10 +65,9 @@ export class Fiber {
     }
 
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = () => {
-        this.resolveAllInputValues(node).then(() => {
-          fiberCompletedListener();
-        });
+      const wrappedFiberCompletedListener = async () => {
+        this.resolveAllInputValues(node);
+        fiberCompletedListener();
       };
 
       this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
@@ -103,7 +102,7 @@ export class Fiber {
       if (awaitingCallback === undefined) {
         throw new Error('awaitingCallback is empty');
       }
-      awaitingCallback();
+      await awaitingCallback();
       return;
     }
 
