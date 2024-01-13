@@ -82,8 +82,6 @@ export type TriggeredFn<
   triggeringSocketName: keyof TInput;
   // state of the node.
   state: TState;
-  setState: (state: TState) => void;
-  getState: () => TState;
   engine?: Engine;
   node?: INode;
   graph: IGraph;
@@ -129,11 +127,7 @@ export interface IHasInit<
 }
 
 export interface IHasDispose<TState> {
-  dispose: (params: {
-    state: TState;
-    setState: (state: TState) => void;
-    graph: IGraph;
-  }) => StateReturn<TState>;
+  dispose: (params: { state: TState; graph: IGraph }) => StateReturn<TState>;
 }
 
 export interface IFlowNodeDefinition<
