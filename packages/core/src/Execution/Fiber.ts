@@ -10,25 +10,6 @@ function isPromise(value: unknown) {
   return value instanceof Promise;
 }
 
-const wrapFiberListener = (
-  fiberCompletedListener: () => Promise<void> | void,
-  resolveAllInputValues: Fiber['resolveAllInputValues'],
-  node: INode | undefined = undefined
-) => {
-  return async () => {
-    if (node) {
-      await resolveAllInputValues(node);
-    }
-
-    if (isPromise(fiberCompletedListener)) {
-      await fiberCompletedListener();
-      return;
-    }
-
-    fiberCompletedListener();
-  };
-};
-
 export class Fiber {
   private readonly fiberCompletedListenerStack: (() => Promise<void>)[] = [];
   private readonly nodes: GraphNodes;
@@ -44,14 +25,31 @@ export class Fiber {
   ) {
     this.nodes = engine.nodes;
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = wrapFiberListener(
+      const wrappedFiberCompletedListener = this.wrapFiberListener(
         fiberCompletedListener,
-        this.resolveAllInputValues,
         node
       );
 
       this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
     }
+  }
+
+  wrapFiberListener(
+    fiberCompletedListener: () => Promise<void> | void,
+    node: INode | undefined = undefined
+  ) {
+    return async () => {
+      if (node) {
+        await this.resolveAllInputValues(node);
+      }
+
+      if (isPromise(fiberCompletedListener)) {
+        await fiberCompletedListener();
+        return;
+      }
+
+      fiberCompletedListener();
+    };
   }
 
   // this is syncCommit.
@@ -86,9 +84,8 @@ export class Fiber {
     }
 
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = wrapFiberListener(
+      const wrappedFiberCompletedListener = this.wrapFiberListener(
         fiberCompletedListener,
-        this.resolveAllInputValues,
         node
       );
 
