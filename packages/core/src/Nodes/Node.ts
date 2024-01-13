@@ -1,4 +1,4 @@
-import { IGraph } from '../Graphs/Graph.js';
+import { GraphNodes, IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
 import { generateUuid } from '../generateUuid.js';
 import { INode, NodeType } from './NodeInstance.js';
@@ -6,13 +6,20 @@ import { readInputFromSockets, writeOutputsToSocket } from './NodeSockets.js';
 import { INodeDescription } from './Registry/NodeDescription.js';
 
 export interface IStateService {
-  getState(nodeId: string, graph: IGraph): Promise<any> | any;
-  setState(nodeId: string, state: any, graph: IGraph): Promise<void> | void;
+  storeEvent(event: any): void;
+  getState(nodeId: string): any;
+  setState(nodeId: string, newState: any): void;
+  rehydrateState(nodes: GraphNodes, stateKey?: string): Promise<void>;
+  syncAndClearState(): Promise<void>;
 }
 
 export type NodeConfiguration = {
   [key: string]: any;
 };
+
+export type SetStateArgs =
+  | Record<string, any>
+  | ((prevState: Record<string, any>) => Record<string, any>);
 
 export abstract class Node<TNodeType extends NodeType> implements INode {
   public readonly inputs: Socket[];
@@ -28,51 +35,66 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
   public id: string;
   public readonly configuration: NodeConfiguration;
 
-  async getState() {
+  createStateProxy() {
+    const handler = {
+      get: (_: any, property: string) => {
+        // Get the current state
+        console.log('getting state from proxy', property);
+        const currentState = this.getState();
+        return currentState[property];
+      },
+      set: (_: any, property: string, value: any) => {
+        // Set the new value in the state
+        this.setState((prevState) => ({
+          ...prevState,
+          [property]: value
+        }));
+        return true; // Indicate that the assignment was successful
+      }
+    };
+
+    return new Proxy({}, handler);
+  }
+
+  getState() {
     const stateService = this.graph.getDependency<IStateService>(
       'IStateService',
       true
     );
     if (stateService) {
-      const serviceState = await stateService.getState(this.id, this.graph);
-      return {
-        ...this._state,
-        ...serviceState
-      };
+      const serviceState = stateService.getState(this.id);
+
+      // handle when state is undefined or null.  This can happen when a node is first created
+      // and has not yet been initialized
+      if (!serviceState) {
+        stateService.setState(this.id, this._state);
+        return this._state;
+      }
+      return serviceState;
     }
     return this._state;
   }
 
-  async setState(value: Record<string, any>) {
+  setState(value: SetStateArgs) {
+    debugger;
     // check if value is an object and if so, check for functions and store them separately
-    const functions: any = {};
-    const obj: any = {};
-    for (const key in value) {
-      if (typeof value[key] === 'function') {
-        functions[key] = value[key];
-        delete value[key];
-      } else {
-        obj[key] = value[key];
-      }
-    }
-
-    this._state = {
-      ...this._state,
-      ...functions
-    };
-
     const stateService = this.graph.getDependency<IStateService>(
       'IStateService',
       true
     );
     if (stateService) {
-      await stateService.setState(this.id, value, this.graph);
+      if (typeof value === 'function') {
+        const prevState = stateService.getState(this.id);
+        const newState = value(prevState);
+        stateService.setState(this.id, newState);
+        return;
+      }
+
+      stateService.setState(this.id, value);
       return;
     }
-    this._state = {
-      ...this._state,
-      ...obj
-    };
+
+    this._state = value;
   }
 
   constructor(node: Omit<INode, 'nodeType'> & { nodeType: TNodeType }) {
