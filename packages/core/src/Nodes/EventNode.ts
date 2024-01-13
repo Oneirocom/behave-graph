@@ -88,34 +88,35 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
     super({ ...nodeProps, nodeType: NodeType.Event });
     this.initInner = nodeProps.init;
     this.disposeInner = nodeProps.dispose;
-    this.setState(nodeProps.initialState);
+    this._state = nodeProps.initialState;
     this.outputSocketKeys = nodeProps.outputs.map((s) => s.name);
   }
 
   init = async (engine: Engine): Promise<any> => {
-    const currentState = await this.getState();
+    const stateProxy = this.createStateProxy();
     const state = this.initInner({
       node: this,
       engine: engine,
       read: this.readInput,
       write: this.writeOutput,
-      state: currentState,
-      setState: this.setState,
-      getState: this.getState,
+      state: stateProxy,
       outputSocketKeys: this.outputSocketKeys,
       commit: (outFlowname, fiberCompletedListener) =>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph
     });
-    await this.setState(state);
+
+    if (!state) return;
+    Object.keys(state).forEach((key) => {
+      stateProxy[key] = state[key];
+    });
   };
 
   async dispose(): Promise<void> {
-    const currentState = await this.getState();
+    const currentState = this.createStateProxy();
     this.disposeInner({
       state: currentState,
-      setState: this.setState,
       graph: this.graph
     });
   }
