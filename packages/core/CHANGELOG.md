@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.14.0
+
+### Minor Changes
+
+- Removes get and set state and uses a proxy. Fix fiber listeners.
+
 ## 0.13.7
 
 ### Patch Changes
