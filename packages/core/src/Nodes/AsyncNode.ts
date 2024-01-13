@@ -2,8 +2,8 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { generateUuid } from '../generateUuid.js';
-import { IStateService, Node, NodeConfiguration } from './Node.js';
+
+import { Node, NodeConfiguration } from './Node.js';
 import { IAsyncNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IAsyncNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';
@@ -91,40 +91,43 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
     this.triggeredInner = node.triggered;
     this.disposeInner = node.dispose;
 
-    this.setState(node.initialState);
+    this._state = node.initialState;
   }
 
-  triggered = async (
+  triggered = (
     engine: Pick<Engine, 'commitToNewFiber'>,
     triggeringSocketName: string,
     finished: () => void
   ) => {
-    const currentState = await this.getState();
-    const nextState = await this.triggeredInner({
+    const stateProxy = this.createStateProxy();
+
+    const state = this.triggeredInner({
       read: this.readInput,
       write: this.writeOutput,
       commit: (outFlowname, fiberCompletedListener) =>
         engine.commitToNewFiber(this, outFlowname, fiberCompletedListener),
       configuration: this.configuration,
       graph: this.graph,
-      state: currentState,
-      getState: this.getState,
-      setState: this.setState,
+      state: stateProxy,
       finished,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       triggeringSocketName
     });
 
-    await this.setState(nextState);
+    if (!state) return;
+    Object.keys(state).forEach((key) => {
+      stateProxy[key] = state[key];
+    });
   };
   dispose = async () => {
-    const currentState = this.getState();
+    const stateProxy = this.createStateProxy();
     const state = this.disposeInner({
-      state: currentState,
-      setState: this.setState,
+      state: stateProxy,
       graph: this.graph
     });
-    this.setState(state);
+    Object.keys(state).forEach((key) => {
+      stateProxy[key] = state[key];
+    });
   };
 }
