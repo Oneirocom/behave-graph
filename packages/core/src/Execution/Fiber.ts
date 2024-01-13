@@ -6,6 +6,29 @@ import { INode, isAsyncNode, isFlowNode } from '../Nodes/NodeInstance.js';
 import { Engine } from './Engine.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
+function isPromise(value: unknown) {
+  return value instanceof Promise;
+}
+
+const wrapFiberListener = (
+  fiberCompletedListener: () => Promise<void> | void,
+  resolveAllInputValues: Fiber['resolveAllInputValues'],
+  node: INode | undefined = undefined
+) => {
+  return async () => {
+    if (node) {
+      await resolveAllInputValues(node);
+    }
+
+    if (isPromise(fiberCompletedListener)) {
+      await fiberCompletedListener();
+      return;
+    }
+
+    fiberCompletedListener();
+  };
+};
+
 export class Fiber {
   private readonly fiberCompletedListenerStack: (() => Promise<void>)[] = [];
   private readonly nodes: GraphNodes;
@@ -14,21 +37,19 @@ export class Fiber {
   constructor(
     public engine: Engine,
     public nextEval: Link | null,
-    fiberCompletedListener: (() => void) | undefined = undefined,
+    fiberCompletedListener:
+      | (() => Promise<void> | void)
+      | undefined = undefined,
     node: INode | undefined = undefined
   ) {
     this.nodes = engine.nodes;
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = async () => {
-        if (node) {
-          await this.resolveAllInputValues(node);
+      const wrappedFiberCompletedListener = wrapFiberListener(
+        fiberCompletedListener,
+        this.resolveAllInputValues,
+        node
+      );
 
-          fiberCompletedListener();
-          return;
-        }
-
-        fiberCompletedListener();
-      };
       this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
     }
   }
@@ -65,10 +86,11 @@ export class Fiber {
     }
 
     if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = async () => {
-        this.resolveAllInputValues(node);
-        fiberCompletedListener();
-      };
+      const wrappedFiberCompletedListener = wrapFiberListener(
+        fiberCompletedListener,
+        this.resolveAllInputValues,
+        node
+      );
 
       this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
     }
