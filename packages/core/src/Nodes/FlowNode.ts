@@ -75,21 +75,20 @@ export class FlowNodeInstance<TFlowNodeDefinition extends IFlowNodeDefinition>
   ) {
     super({ ...nodeProps, nodeType: NodeType.Flow });
     this.triggeredInner = nodeProps.triggered;
-    this.setState(nodeProps.initialState);
+    this._state = nodeProps.initialState;
     this.outputSocketKeys = nodeProps.outputs.map((s) => s.name);
   }
 
   public triggered = async (fiber: Fiber, triggeringSocketName: string) => {
-    const currentState = await this.getState();
-    const nextState = await this.triggeredInner({
+    const stateProxy = this.createStateProxy();
+
+    const state = await this.triggeredInner({
       commit: (outFlowName, fiberCompletedListener) =>
         fiber.commit(this, outFlowName, fiberCompletedListener),
       read: this.readInput,
       write: this.writeOutput,
       graph: this.graph,
-      state: currentState,
-      setState: this.setState,
-      getState: this.getState,
+      state: stateProxy,
       configuration: this.configuration,
       outputSocketKeys: this.outputSocketKeys,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -97,6 +96,10 @@ export class FlowNodeInstance<TFlowNodeDefinition extends IFlowNodeDefinition>
       triggeringSocketName
     });
 
-    await this.setState(nextState);
+    if (!state) return;
+
+    Object.keys(state).forEach((key) => {
+      stateProxy[key] = state[key];
+    });
   };
 }
