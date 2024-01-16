@@ -5,6 +5,12 @@ import { INode, isAsyncNode, isFlowNode } from '../Nodes/NodeInstance.js';
 import { Engine } from './Engine.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
+export type FiberListenerInner =
+  | ((resolveSockets?: () => Promise<void>) => Promise<void> | void)
+  | undefined;
+
+type FiberListener = (() => Promise<void> | void) | undefined;
+
 function isPromise(value: any) {
   return (
     value instanceof Promise || value?.constructor?.name === 'AsyncFunction'
@@ -12,16 +18,14 @@ function isPromise(value: any) {
 }
 
 export class Fiber {
-  private readonly fiberCompletedListenerStack: (() => Promise<void>)[] = [];
+  private readonly fiberCompletedListenerStack: FiberListener[] = [];
   private readonly nodes: GraphNodes;
   public executionSteps = 0;
 
   constructor(
     public engine: Engine,
     public nextEval: Link | null,
-    fiberCompletedListener:
-      | (() => Promise<void> | void)
-      | undefined = undefined,
+    fiberCompletedListener: FiberListenerInner = undefined,
     node: INode | undefined = undefined
   ) {
     this.nodes = engine.nodes;
@@ -36,20 +40,26 @@ export class Fiber {
   }
 
   wrapFiberListener(
-    fiberCompletedListener: () => Promise<void> | void,
+    fiberCompletedListener: FiberListenerInner,
     node: INode | undefined = undefined
   ) {
-    return async () => {
+    const resolveSockets = async () => {
       if (node) {
         await this.resolveAllInputValues(node);
       }
+    };
 
-      if (isPromise(fiberCompletedListener)) {
-        await fiberCompletedListener();
+    return async () => {
+      if (fiberCompletedListener === undefined) {
         return;
       }
 
-      fiberCompletedListener();
+      if (isPromise(fiberCompletedListener)) {
+        await fiberCompletedListener(resolveSockets);
+        return;
+      }
+
+      fiberCompletedListener(resolveSockets);
     };
   }
 
@@ -58,7 +68,7 @@ export class Fiber {
   commit(
     node: INode,
     outputSocketName: string,
-    fiberCompletedListener: (() => Promise<void> | void) | undefined = undefined
+    fiberCompletedListener: FiberListenerInner = undefined
   ) {
     Assert.mustBeTrue(isFlowNode(node));
     Assert.mustBeTrue(this.nextEval === null);

@@ -1,4 +1,5 @@
 import { Engine } from '../Execution/Engine.js';
+import { FiberListenerInner } from '../Execution/Fiber.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Choices } from '../Sockets/Socket.js';
 import { AsyncNodeInstance } from './AsyncNode.js';
@@ -76,7 +77,7 @@ export type TriggeredFn<
   write<T>(outValueName: SocketNames<TOutput>, value: T): void;
   commit(
     outFlowName: SocketNames<TOutput>,
-    fiberCompletedListener?: () => void
+    fiberCompletedListener?: FiberListenerInner
   ): void; // commits to current fiber unless 'async-flow' or 'event-flow'
   outputSocketKeys: SocketNames<TOutput>[];
   triggeringSocketName: keyof TInput;

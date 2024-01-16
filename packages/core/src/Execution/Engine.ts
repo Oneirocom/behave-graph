@@ -2,6 +2,7 @@
 // fdfdfd
 import { Assert } from '../Diagnostics/Assert.js';
 import { EventEmitter } from '../Events/EventEmitter.js';
+import { generateUuid } from '../generateUuid.js';
 import { GraphNodes } from '../Graphs/Graph.js';
 import {
   IAsyncNode,
@@ -10,9 +11,8 @@ import {
   isAsyncNode,
   isEventNode
 } from '../Nodes/NodeInstance.js';
-import { generateUuid } from '../generateUuid.js';
 import { sleep } from '../sleep.js';
-import { Fiber } from './Fiber.js';
+import { Fiber, FiberListenerInner } from './Fiber.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
 export class Engine {
@@ -60,7 +60,7 @@ export class Engine {
   commitToNewFiber(
     node: INode,
     outputFlowSocketName: string,
-    fiberCompletedListener: (() => void) | undefined = undefined
+    fiberCompletedListener: FiberListenerInner = undefined
   ) {
     Assert.mustBeTrue(isEventNode(node) || isAsyncNode(node));
     const outputSocket = node.outputs.find(

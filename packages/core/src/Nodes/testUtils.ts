@@ -143,7 +143,7 @@ export const generateTriggerTester = <
         });
 
         if (fiberCompletedListener) {
-          fiberCompletedListener();
+          fiberCompletedListener(() => Promise.resolve());
         }
       },
       configuration,

@@ -2,7 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Fiber } from '../Execution/Fiber.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { IStateService, Node, NodeConfiguration } from './Node.js';
+import { Node, NodeConfiguration } from './Node.js';
 import { IFlowNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IFlowNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';

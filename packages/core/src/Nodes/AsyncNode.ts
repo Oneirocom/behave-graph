@@ -2,7 +2,6 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-
 import { Node, NodeConfiguration } from './Node.js';
 import { IAsyncNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IAsyncNode, INode, NodeType } from './NodeInstance.js';
@@ -42,10 +41,12 @@ export class AsyncNode extends Node<NodeType.Async> {
     );
   }
 
-  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
   triggered(
+    // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
     engine: Engine,
+    // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
     triggeringSocketName: string,
+    // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
     finished: () => void
   ) {
     throw new Error('not implemented');
@@ -126,6 +127,8 @@ export class AsyncNodeInstance<TAsyncNodeDef extends IAsyncNodeDefinition>
       state: stateProxy,
       graph: this.graph
     });
+
+    if (!state) return;
     Object.keys(state).forEach((key) => {
       stateProxy[key] = state[key];
     });
