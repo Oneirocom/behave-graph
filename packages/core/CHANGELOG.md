@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.14.1
+
+### Patch Changes
+
+- Fix error in fiber complete wrapper listener
+
 ## 0.14.0
 
 ### Minor Changes
