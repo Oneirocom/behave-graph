@@ -1,4 +1,3 @@
-import { exec } from 'child_process';
 import { Assert } from '../Diagnostics/Assert.js';
 import { GraphNodes } from '../Graphs/Graph.js';
 import { Link } from '../Nodes/Link.js';
@@ -6,8 +5,10 @@ import { INode, isAsyncNode, isFlowNode } from '../Nodes/NodeInstance.js';
 import { Engine } from './Engine.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
-function isPromise(value: unknown) {
-  return value instanceof Promise;
+function isPromise(value: any) {
+  return (
+    value instanceof Promise || value?.constructor?.name === 'AsyncFunction'
+  );
 }
 
 export class Fiber {
@@ -57,7 +58,7 @@ export class Fiber {
   commit(
     node: INode,
     outputSocketName: string,
-    fiberCompletedListener: (() => void) | undefined = undefined
+    fiberCompletedListener: (() => Promise<void> | void) | undefined = undefined
   ) {
     Assert.mustBeTrue(isFlowNode(node));
     Assert.mustBeTrue(this.nextEval === null);

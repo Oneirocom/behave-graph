@@ -1,6 +1,5 @@
 import { GraphNodes, IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { generateUuid } from '../generateUuid.js';
 import { INode, NodeType } from './NodeInstance.js';
 import { readInputFromSockets, writeOutputsToSocket } from './NodeSockets.js';
 import { INodeDescription } from './Registry/NodeDescription.js';
@@ -76,7 +75,6 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
   }
 
   setState(value: SetStateArgs) {
-    debugger;
     // check if value is an object and if so, check for functions and store them separately
     const stateService = this.graph.getDependency<IStateService>(
       'IStateService',
