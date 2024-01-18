@@ -1,5 +1,17 @@
 # @magickml/behave-graph
 
+## 0.14.4
+
+### Patch Changes
+
+- Don't have resolveSockets optional
+
+## 0.14.3
+
+### Patch Changes
+
+- Commit callback now takes a helper function to resolve socket values if needed
+
 ## 0.14.2
 
 ### Patch Changes
