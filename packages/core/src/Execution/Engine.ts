@@ -15,6 +15,11 @@ import { sleep } from '../sleep.js';
 import { Fiber, FiberListenerInner } from './Fiber.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
+type NodeError = {
+  node: INode;
+  error: unknown;
+};
+
 export class Engine {
   // tracking the next node+input socket to execute.
   public readonly id = generateUuid();
@@ -23,6 +28,7 @@ export class Engine {
   public readonly eventNodes: IEventNode[] = [];
   public readonly onNodeExecutionStart = new EventEmitter<INode>();
   public readonly onNodeExecutionEnd = new EventEmitter<INode>();
+  public readonly onNodeExecutionError = new EventEmitter<NodeError>();
   public executionSteps = 0;
 
   constructor(public readonly nodes: GraphNodes) {
@@ -36,15 +42,20 @@ export class Engine {
     this.eventNodes.forEach(async (eventNode) => {
       // evaluate input parameters
 
-      for (const inputSocket of eventNode.inputs) {
-        Assert.mustBeTrue(inputSocket.valueTypeName !== 'flow');
-        this.executionSteps += await resolveSocketValue(this, inputSocket);
-      }
+      try {
+        for (const inputSocket of eventNode.inputs) {
+          Assert.mustBeTrue(inputSocket.valueTypeName !== 'flow');
+          this.executionSteps += await resolveSocketValue(this, inputSocket);
+        }
 
-      this.onNodeExecutionStart.emit(eventNode);
-      await eventNode.init(this);
-      this.executionSteps++;
-      this.onNodeExecutionEnd.emit(eventNode);
+        // this.onNodeExecutionStart.emit(eventNode);
+        await eventNode.init(this);
+        this.executionSteps++;
+        // this.onNodeExecutionEnd.emit(eventNode);
+      } catch (error) {
+        this.onNodeExecutionError.emit({ node: eventNode, error });
+        throw error;
+      }
     });
   }
 
@@ -62,27 +73,32 @@ export class Engine {
     outputFlowSocketName: string,
     fiberCompletedListener: FiberListenerInner = undefined
   ) {
-    Assert.mustBeTrue(isEventNode(node) || isAsyncNode(node));
-    const outputSocket = node.outputs.find(
-      (socket) => socket.name === outputFlowSocketName
-    );
-    if (outputSocket === undefined) {
-      throw new Error(`no socket with the name ${outputFlowSocketName}`);
-    }
-    if (outputSocket.links.length > 1) {
-      throw new Error(
-        'invalid for an output flow socket to have multiple downstream links:' +
-          `${node.description.typeName}.${outputSocket.name} has ${outputSocket.links.length} downlinks`
+    try {
+      Assert.mustBeTrue(isEventNode(node) || isAsyncNode(node));
+      const outputSocket = node.outputs.find(
+        (socket) => socket.name === outputFlowSocketName
       );
-    }
-    if (outputSocket.links.length === 1) {
-      const fiber = new Fiber(
-        this,
-        outputSocket.links[0],
-        fiberCompletedListener,
-        node
-      );
-      this.fiberQueue.push(fiber);
+      if (outputSocket === undefined) {
+        throw new Error(`no socket with the name ${outputFlowSocketName}`);
+      }
+      if (outputSocket.links.length > 1) {
+        throw new Error(
+          'invalid for an output flow socket to have multiple downstream links:' +
+            `${node.description.typeName}.${outputSocket.name} has ${outputSocket.links.length} downlinks`
+        );
+      }
+      if (outputSocket.links.length === 1) {
+        const fiber = new Fiber(
+          this,
+          outputSocket.links[0],
+          fiberCompletedListener,
+          node
+        );
+        this.fiberQueue.push(fiber);
+      }
+    } catch (error) {
+      this.onNodeExecutionError.emit({ node, error });
+      throw error;
     }
   }
 
