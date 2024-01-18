@@ -6,7 +6,7 @@ import { Engine } from './Engine.js';
 import { resolveSocketValue } from './resolveSocketValue.js';
 
 export type FiberListenerInner =
-  | ((resolveSockets?: () => Promise<void>) => Promise<void> | void)
+  | ((resolveSockets: () => Promise<void>) => Promise<void> | void)
   | undefined;
 
 type FiberListener = (() => Promise<void> | void) | undefined;
@@ -54,12 +54,17 @@ export class Fiber {
         return;
       }
 
-      if (isPromise(fiberCompletedListener)) {
-        await fiberCompletedListener(resolveSockets);
-        return;
-      }
+      try {
+        if (isPromise(fiberCompletedListener)) {
+          await fiberCompletedListener(resolveSockets);
+          return;
+        }
 
-      fiberCompletedListener(resolveSockets);
+        fiberCompletedListener(resolveSockets);
+      } catch (error) {
+        if (node) this.engine.onNodeExecutionError.emit({ node, error });
+        throw error;
+      }
     };
   }
 
@@ -70,37 +75,44 @@ export class Fiber {
     outputSocketName: string,
     fiberCompletedListener: FiberListenerInner = undefined
   ) {
-    Assert.mustBeTrue(isFlowNode(node));
-    Assert.mustBeTrue(this.nextEval === null);
+    try {
+      Assert.mustBeTrue(isFlowNode(node));
+      Assert.mustBeTrue(this.nextEval === null);
 
-    const outputSocket = node.outputs.find(
-      (socket) => socket.name === outputSocketName
-    );
-    if (outputSocket === undefined) {
-      throw new Error(`can not find socket with the name ${outputSocketName}`);
-    }
-
-    if (outputSocket.links.length > 1) {
-      throw new Error(
-        'invalid for an output flow socket to have multiple downstream links:' +
-          `${node.description.typeName}.${outputSocket.name} has ${outputSocket.links.length} downlinks`
+      const outputSocket = node.outputs.find(
+        (socket) => socket.name === outputSocketName
       );
-    }
-    if (outputSocket.links.length === 1) {
-      const link = outputSocket.links[0];
-      if (link === undefined) {
-        throw new Error('link must be defined');
+      if (outputSocket === undefined) {
+        throw new Error(
+          `can not find socket with the name ${outputSocketName}`
+        );
       }
-      this.nextEval = link;
-    }
 
-    if (fiberCompletedListener !== undefined) {
-      const wrappedFiberCompletedListener = this.wrapFiberListener(
-        fiberCompletedListener,
-        node
-      );
+      if (outputSocket.links.length > 1) {
+        throw new Error(
+          'invalid for an output flow socket to have multiple downstream links:' +
+            `${node.description.typeName}.${outputSocket.name} has ${outputSocket.links.length} downlinks`
+        );
+      }
+      if (outputSocket.links.length === 1) {
+        const link = outputSocket.links[0];
+        if (link === undefined) {
+          throw new Error('link must be defined');
+        }
+        this.nextEval = link;
+      }
 
-      this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
+      if (fiberCompletedListener !== undefined) {
+        const wrappedFiberCompletedListener = this.wrapFiberListener(
+          fiberCompletedListener,
+          node
+        );
+
+        this.fiberCompletedListenerStack.push(wrappedFiberCompletedListener);
+      }
+    } catch (error) {
+      this.engine.onNodeExecutionError.emit({ node, error });
+      throw error;
     }
   }
 
@@ -137,35 +149,39 @@ export class Fiber {
     }
 
     const node = this.nodes[link.nodeId];
-
-    for (const inputSocket of node.inputs) {
-      if (inputSocket.valueTypeName !== 'flow') {
-        this.executionSteps += await resolveSocketValue(
-          this.engine,
-          inputSocket
-        );
+    try {
+      for (const inputSocket of node.inputs) {
+        if (inputSocket.valueTypeName !== 'flow') {
+          this.executionSteps += await resolveSocketValue(
+            this.engine,
+            inputSocket
+          );
+        }
       }
-    }
 
-    // first resolve all input values
-    // flow socket is set to true for the one flowing in, while all others are set to false.
-    this.engine.onNodeExecutionStart.emit(node);
-    if (isAsyncNode(node)) {
-      this.engine.asyncNodes.push(node);
-      await node.triggered(this.engine, link.socketName, () => {
-        // remove from the list of pending async nodes
-        const index = this.engine.asyncNodes.indexOf(node);
-        this.engine.asyncNodes.splice(index, 1);
+      // first resolve all input values
+      // flow socket is set to true for the one flowing in, while all others are set to false.
+      this.engine.onNodeExecutionStart.emit(node);
+      if (isAsyncNode(node)) {
+        this.engine.asyncNodes.push(node);
+        await node.triggered(this.engine, link.socketName, () => {
+          // remove from the list of pending async nodes
+          const index = this.engine.asyncNodes.indexOf(node);
+          this.engine.asyncNodes.splice(index, 1);
+          this.engine.onNodeExecutionEnd.emit(node);
+          this.executionSteps++;
+        });
+        return;
+      }
+      if (isFlowNode(node)) {
+        await node.triggered(this, link.socketName);
         this.engine.onNodeExecutionEnd.emit(node);
         this.executionSteps++;
-      });
-      return;
-    }
-    if (isFlowNode(node)) {
-      await node.triggered(this, link.socketName);
-      this.engine.onNodeExecutionEnd.emit(node);
-      this.executionSteps++;
-      return;
+        return;
+      }
+    } catch (error: unknown) {
+      this.engine.onNodeExecutionError.emit({ node, error });
+      throw error;
     }
 
     throw new TypeError(
