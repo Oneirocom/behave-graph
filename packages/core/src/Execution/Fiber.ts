@@ -102,6 +102,8 @@ export class Fiber {
         this.nextEval = link;
       }
 
+      this.engine.onNodeCommit.emit({ node, socket: outputSocketName });
+
       if (fiberCompletedListener !== undefined) {
         const wrappedFiberCompletedListener = this.wrapFiberListener(
           fiberCompletedListener,

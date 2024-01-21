@@ -20,6 +20,11 @@ type NodeError = {
   error: unknown;
 };
 
+type NodeCommit = {
+  node: INode;
+  socket: string;
+};
+
 export class Engine {
   // tracking the next node+input socket to execute.
   public readonly id = generateUuid();
@@ -29,6 +34,7 @@ export class Engine {
   public readonly onNodeExecutionStart = new EventEmitter<INode>();
   public readonly onNodeExecutionEnd = new EventEmitter<INode>();
   public readonly onNodeExecutionError = new EventEmitter<NodeError>();
+  public readonly onNodeCommit = new EventEmitter<NodeCommit>();
   public executionSteps = 0;
 
   constructor(public readonly nodes: GraphNodes) {
@@ -94,6 +100,8 @@ export class Engine {
           fiberCompletedListener,
           node
         );
+        this.onNodeCommit.emit({ node, socket: outputFlowSocketName });
+
         this.fiberQueue.push(fiber);
       }
     } catch (error) {
