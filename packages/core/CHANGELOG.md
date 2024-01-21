@@ -1,5 +1,17 @@
 # @magickml/behave-graph
 
+## 0.14.6
+
+### Patch Changes
+
+- Add onNodeCommit event emitter
+
+## 0.14.5
+
+### Patch Changes
+
+- Remove event inint emit and add onNodeExecutionError
+
 ## 0.14.4
 
 ### Patch Changes
