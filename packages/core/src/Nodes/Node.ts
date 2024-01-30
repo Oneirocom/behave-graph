@@ -10,6 +10,7 @@ export interface IStateService {
   setState(nodeId: string, newState: any): void;
   rehydrateState(nodes: GraphNodes, stateKey?: string): Promise<void>;
   syncAndClearState(): Promise<void>;
+  resetState(): Promise<void>;
 }
 
 export type NodeConfiguration = {

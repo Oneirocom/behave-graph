@@ -1,6 +1,6 @@
 import {
-  NodeCategory,
-  makeAsyncNodeDefinition
+  makeAsyncNodeDefinition,
+  NodeCategory
 } from '../../../Nodes/NodeDefinitions.js';
 
 // New format
@@ -24,6 +24,7 @@ export const Delay = makeAsyncNodeDefinition({
   initialState: {
     timeoutPending: false
   },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   triggered: async ({ state, finished = () => {}, commit, read }) => {
     // if there is a valid timeout running, leave it.
     if (state.timeoutPending) {
