@@ -1,5 +1,23 @@
 # @magickml/behave-graph
 
+## 0.14.9
+
+### Patch Changes
+
+- Await inner init function in event node and remove console log.
+
+## 0.14.8
+
+### Patch Changes
+
+- Add optional choices to confguration type
+
+## 0.14.7
+
+### Patch Changes
+
+- Add reset state to state service interface
+
 ## 0.14.6
 
 ### Patch Changes
