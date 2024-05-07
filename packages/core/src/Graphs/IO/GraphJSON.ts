@@ -68,5 +68,6 @@ export type GraphJSON = {
   nodes?: NodeJSON[];
   variables?: VariableJSON[];
   customEvents?: CustomEventJSON[];
+  data: Record<string, any>;
   metadata?: Metadata;
 };
