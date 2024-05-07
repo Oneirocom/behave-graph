@@ -12,6 +12,7 @@ export type NodeConfigurationDescription = {
   [key: string]: {
     valueType: string;
     defaultValue?: any;
+    choices?: string[];
   };
 };
 
