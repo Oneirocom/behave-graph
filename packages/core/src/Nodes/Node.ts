@@ -39,7 +39,6 @@ export abstract class Node<TNodeType extends NodeType> implements INode {
     const handler = {
       get: (_: any, property: string) => {
         // Get the current state
-        console.log('getting state from proxy', property);
         const currentState = this.getState();
         return currentState[property];
       },
