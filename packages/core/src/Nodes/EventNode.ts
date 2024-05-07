@@ -2,8 +2,7 @@ import { Assert } from '../Diagnostics/Assert.js';
 import { Engine } from '../Execution/Engine.js';
 import { IGraph } from '../Graphs/Graph.js';
 import { Socket } from '../Sockets/Socket.js';
-import { generateUuid } from '../generateUuid.js';
-import { IStateService, Node, NodeConfiguration } from './Node.js';
+import { Node, NodeConfiguration } from './Node.js';
 import { IEventNodeDefinition, NodeCategory } from './NodeDefinitions.js';
 import { IEventNode, INode, NodeType } from './NodeInstance.js';
 import { NodeDescription } from './Registry/NodeDescription.js';
@@ -94,7 +93,7 @@ export class EventNodeInstance<TEventNodeDef extends IEventNodeDefinition>
 
   init = async (engine: Engine): Promise<any> => {
     const stateProxy = this.createStateProxy();
-    const state = this.initInner({
+    const state = await this.initInner({
       node: this,
       engine: engine,
       read: this.readInput,
