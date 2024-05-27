@@ -1,6 +1,6 @@
 {
   "name": "@magickml/behave-graph",
-  "version": "0.14.11",
+  "version": "0.14.12",
   "type": "commonjs",
   "types": "./dist/types/index.d.ts",
   "main": "./dist/node/index.js",

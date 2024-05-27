@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.14.12
+
+### Patch Changes
+
+- Update IStateService
+
 ## 0.14.11
 
 ### Patch Changes
