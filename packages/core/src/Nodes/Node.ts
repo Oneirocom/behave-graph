@@ -9,6 +9,7 @@ export interface IStateService {
   getState(nodeId: string): any;
   setState(nodeId: string, newState: any): void;
   rehydrateState(nodes: GraphNodes, stateKey?: string): Promise<void>;
+  syncState(): Promise<void>;
   syncAndClearState(): Promise<void>;
   resetState(): Promise<void>;
 }
