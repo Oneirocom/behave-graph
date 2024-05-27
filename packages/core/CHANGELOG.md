@@ -1,5 +1,17 @@
 # @magickml/behave-graph
 
+## 0.14.11
+
+### Patch Changes
+
+- Make data property optional on graphJSON
+
+## 0.14.10
+
+### Patch Changes
+
+- Add data property to GraphJSON type
+
 ## 0.14.9
 
 ### Patch Changes
