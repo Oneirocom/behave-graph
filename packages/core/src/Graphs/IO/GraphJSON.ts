@@ -1,5 +1,5 @@
 import { Metadata } from '../../Metadata.js';
-import { SocketDefinition } from '../../Nodes/NodeDefinitions.js';
+import { SocketListDefinition } from '../../Nodes/NodeDefinitions.js';
 
 export type ValueJSON =
   | string
@@ -64,7 +64,7 @@ export type CustomEventJSON = {
   metadata?: Metadata;
 };
 
-export type GraphSocketJSON = SocketDefinition & {
+export type GraphSocketJSON = SocketListDefinition & {
   description?: string;
 };
 
