@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.14.14
+
+### Patch Changes
+
+- Use socket list definition for graph socket json
+
 ## 0.14.13
 
 ### Patch Changes
