@@ -1,5 +1,11 @@
 # @magickml/behave-graph
 
+## 0.14.15
+
+### Patch Changes
+
+- Improve error logging from read graph JSON validation
+
 ## 0.14.14
 
 ### Patch Changes
